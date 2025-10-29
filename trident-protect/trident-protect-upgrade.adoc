@@ -1,0 +1,65 @@
+---
+sidebar: sidebar 
+permalink: trident-protect/trident-protect-upgrade.html 
+keywords: trident, protect, netapp, upgrade, new, version 
+summary: 'È possibile aggiornare Trident Protect all"ultima versione per sfruttare le nuove funzionalità o le correzioni di bug.' 
+---
+= Aggiorna la protezione Trident
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile aggiornare Trident Protect all'ultima versione per sfruttare le nuove funzionalità o le correzioni di bug.
+
+[NOTE]
+====
+Quando si esegue l'aggiornamento dalla versione 24.10, gli snapshot in esecuzione durante l'aggiornamento potrebbero non funzionare.  Questo errore non impedisce la creazione di snapshot futuri, manuali o pianificati.  Se uno snapshot non riesce durante l'aggiornamento, puoi crearne manualmente uno nuovo per garantire la protezione dell'applicazione.
+
+Per evitare potenziali errori, è possibile disattivare tutte le pianificazioni degli snapshot prima dell'aggiornamento e riattivarle in seguito.  Tuttavia, ciò comporta la perdita di tutti gli snapshot pianificati durante il periodo di aggiornamento.
+
+====
+Per aggiornare Trident Protect, procedere come segue.
+
+.Passi
+. Aggiorna il repository Trident Helm:
++
+[source, console]
+----
+helm repo update
+----
+. Aggiorna i CRD di protezione Trident :
++
+
+NOTE: Questo passaggio è necessario se si esegue l'aggiornamento da una versione precedente alla 25.06, poiché i CRD sono ora inclusi nella tabella Trident Protect Helm.
+
++
+.. Eseguire questo comando per spostare la gestione dei CRD da `trident-protect-crds` A `trident-protect` :
++
+[source, console]
+----
+kubectl get crd | grep protect.trident.netapp.io | awk '{print $1}' | xargs -I {} kubectl patch crd {} --type merge -p '{"metadata":{"annotations":{"meta.helm.sh/release-name": "trident-protect"}}}'
+----
+.. Eseguire questo comando per eliminare il segreto Helm per `trident-protect-crds` grafico:
++
+
+NOTE: Non disinstallare il `trident-protect-crds` grafico utilizzando Helm, poiché ciò potrebbe rimuovere i CRD e tutti i dati correlati.
+
++
+[source, console]
+----
+kubectl delete secret -n trident-protect -l name=trident-protect-crds,owner=helm
+----
+
+
+. Aggiorna la protezione Trident :
++
+[source, console]
+----
+helm upgrade trident-protect netapp-trident-protect/trident-protect --version 100.2506.0 --namespace trident-protect
+----
+

@@ -1,0 +1,106 @@
+---
+sidebar: sidebar 
+permalink: trident-protect/trident-protect-generate-support-bundle.html 
+keywords: trident, protect, bundle, support, netapp, custom, resource, file 
+summary: 'Trident Protect consente agli amministratori di generare bundle che includono informazioni utili al supporto NetApp , tra cui registri, metriche e informazioni sulla topologia dei cluster e delle app in gestione. Se sei connesso a Internet, puoi caricare i bundle di supporto sul sito di supporto NetApp (NSS) utilizzando un file di risorse personalizzato (CR).' 
+---
+= Genera un pacchetto di supporto Trident Protect
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Trident Protect consente agli amministratori di generare bundle che includono informazioni utili al supporto NetApp , tra cui registri, metriche e informazioni sulla topologia dei cluster e delle app in gestione. Se sei connesso a Internet, puoi caricare i bundle di supporto sul sito di supporto NetApp (NSS) utilizzando un file di risorse personalizzato (CR).
+
+[role="tabbed-block"]
+====
+.Crea un pacchetto di supporto utilizzando una CR
+--
+.Passi
+. Crea il file di risorse personalizzate (CR) e assegnagli un nome (ad esempio, `trident-protect-support-bundle.yaml` ).
+. Configurare i seguenti attributi:
++
+** *metadata.name*: (_Obbligatorio_) Il nome di questa risorsa personalizzata; scegli un nome univoco e sensato per il tuo ambiente.
+** *spec.triggerType*: (_Obbligatorio_) Determina se il pacchetto di supporto viene generato immediatamente o pianificato.  La generazione programmata del bundle avviene alle 00:00 UTC.  Valori possibili:
++
+*** Programmato
+*** Manuale
+
+
+** *spec.uploadEnabled*: (_Facoltativo_) Controlla se il bundle di supporto deve essere caricato sul sito di supporto NetApp dopo essere stato generato.  Se non specificato, il valore predefinito è `false` .  Valori possibili:
++
+*** VERO
+*** falso (predefinito)
+
+
+** *spec.dataWindowStart*: (_Facoltativo_) Una stringa di data nel formato RFC 3339 che specifica la data e l'ora in cui deve iniziare la finestra dei dati inclusi nel bundle di supporto.  Se non specificato, il valore predefinito è 24 ore fa.  La prima data possibile è 7 giorni fa.
++
+Esempio YAML:
+
++
+[source, yaml]
+----
+---
+apiVersion: protect.trident.netapp.io/v1
+kind: AutoSupportBundle
+metadata:
+  name: trident-protect-support-bundle
+spec:
+  triggerType: Manual
+  uploadEnabled: true
+  dataWindowStart: 2024-05-05T12:30:00Z
+----
+
+
+. Dopo aver popolato il `trident-protect-support-bundle.yaml` file con i valori corretti, applicare CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-support-bundle.yaml -n trident-protect
+----
+
+
+--
+.Crea un pacchetto di supporto utilizzando la CLI
+--
+.Passi
+. Crea il pacchetto di supporto, sostituendo i valori tra parentesi con le informazioni provenienti dal tuo ambiente.  IL `trigger-type` determina se il bundle viene creato immediatamente o se il tempo di creazione è dettato dalla pianificazione e può essere `Manual` O `Scheduled` .  L'impostazione predefinita è `Manual` .
++
+Per esempio:
+
++
+[source, console]
+----
+tridentctl-protect create autosupportbundle <my-bundle-name> --trigger-type <trigger-type> -n trident-protect
+----
+
+
+--
+====
+
+
+== Monitorare e recuperare il pacchetto di supporto
+
+Dopo aver creato un pacchetto di supporto utilizzando uno dei due metodi, puoi monitorarne l'avanzamento della generazione e recuperarlo nel tuo sistema locale.
+
+.Passi
+. Aspetta il `status.generationState` raggiungere `Completed` stato. È possibile monitorare l'avanzamento della generazione con il seguente comando:
++
+[source, console]
+----
+kubectl get autosupportbundle trident-protect-support-bundle -n trident-protect
+----
+. Recupera il pacchetto di supporto sul tuo sistema locale. Ottieni il comando di copia dal bundle AutoSupport completato:
++
+[source, console]
+----
+kubectl describe autosupportbundle trident-protect-support-bundle -n trident-protect
+----
++
+Trova il `kubectl cp` comando dall'output ed eseguilo, sostituendo l'argomento di destinazione con la directory locale preferita.
+
+

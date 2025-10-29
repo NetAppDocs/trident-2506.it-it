@@ -1,0 +1,15 @@
+---
+layout: landing-page 
+sidebar: sidebar 
+permalink: index.html 
+summary: 'Trident è un provider e orchestratore di storage open source gestito da NetApp.  Consente di creare volumi di archiviazione per applicazioni containerizzate gestite da Docker e Kubernetes.  **Leggere le note di rilascio per informazioni importanti sull"aggiornamento a Trident 25.06.**' 
+---
+= Documentazione Trident 25.06
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+

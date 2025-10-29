@@ -1,0 +1,85 @@
+---
+sidebar: sidebar 
+permalink: trident-managing-k8s/upgrade-trident.html 
+keywords: upgrade, trident, methods, operator, tridentctl, helm 
+summary: 'Trident segue un ritmo di rilascio di quattro mesi, con tre importanti uscite ogni anno solare.  Ogni nuova versione si basa sulle versioni precedenti, offrendo nuove funzionalità e miglioramenti delle prestazioni, oltre a correzioni di bug e miglioramenti.  Ti consigliamo di effettuare l"aggiornamento almeno una volta all"anno per sfruttare le nuove funzionalità di Trident.' 
+---
+= Trident potenziato
+:hardbreaks:
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+A partire dalla versione 24.02, Trident segue una cadenza di rilascio di quattro mesi, rilasciando tre versioni principali ogni anno solare.  Ogni nuova versione si basa sulle versioni precedenti e offre nuove funzionalità, miglioramenti delle prestazioni, correzioni di bug e miglioramenti.  Ti invitiamo ad effettuare l'aggiornamento almeno una volta all'anno per sfruttare le nuove funzionalità di Trident.
+
+
+
+== Considerazioni prima dell'aggiornamento
+
+Quando si esegue l'aggiornamento all'ultima versione di Trident, tenere presente quanto segue:
+
+* Dovrebbe essere installata una sola istanza Trident in tutti gli spazi dei nomi di un determinato cluster Kubernetes.
+* Trident 23.07 e versioni successive richiedono snapshot del volume v1 e non supportano più snapshot alpha o beta.
+* Se hai creato il Cloud Volumes Service per Google Cloud inlink:../trident-use/gcp.html#learn-about-trident-support-for-cloud-volumes-service-for-google-cloud["Tipo di servizio CVS"] , è necessario aggiornare la configurazione del backend per utilizzare `standardsw` O `zoneredundantstandardsw` livello di servizio durante l'aggiornamento da Trident 23.01.  Mancato aggiornamento del `serviceLevel` nel backend potrebbe causare il fallimento dei volumi. Fare riferimento a link:../trident-use/gcp.html#cvs-service-type-examples["Esempi di tipi di servizio CVS"] per i dettagli.
+* Quando si esegue l'aggiornamento, è importante fornire `parameter.fsType` In `StorageClasses` utilizzato da Trident.  Puoi eliminare e ricreare `StorageClasses` senza interrompere i volumi preesistenti.
++
+** Questo è un **requisito** per l'applicazione https://kubernetes.io/docs/tasks/configure-pod-container/security-context/["contesti di sicurezza"^] per volumi SAN.
+** La directory https://github.com/NetApp/trident/tree/master/trident-installer/sample-input [sample input^] contiene esempi, come https://github.com/NetApp/trident/blob/master/trident-installer/sample-input/storage-class-samples/storage-class-basic.yaml.templ[`storage-class-basic.yaml.templ` ^] e collegamento: https://github.com/NetApp/trident/blob/master/trident-installer/sample-input/storage-class-samples/storage-class-bronze-default.yaml[`storage-class-bronze-default.yaml` ^].
+** Per maggiori informazioni, fare riferimento alink:../trident-rn.html["Problemi noti"] .
+
+
+
+
+
+
+== Passaggio 1: seleziona una versione
+
+Le versioni Trident seguono un sistema basato sulla data `YY.MM` convenzione di denominazione, dove "YY" rappresenta le ultime due cifre dell'anno e "MM" è il mese.  Le versioni Dot seguono un `YY.MM.X` convenzione, dove "X" è il livello di patch.  Selezionerai la versione a cui effettuare l'aggiornamento in base alla versione da cui stai effettuando l'aggiornamento.
+
+* È possibile eseguire un aggiornamento diretto a qualsiasi versione di destinazione che si trovi entro una finestra temporale di quattro versioni dalla versione installata.  Ad esempio, è possibile effettuare l'aggiornamento direttamente dalla versione 24.06 (o da qualsiasi versione 24.06 dot) alla versione 25.06.
+* Se si esegue l'aggiornamento da una versione al di fuori della finestra delle quattro versioni, eseguire un aggiornamento in più fasi.  Utilizzare le istruzioni di aggiornamento perlink:../earlier-versions.html["versione precedente"] stai eseguendo l'aggiornamento alla versione più recente che rientra nella finestra temporale delle quattro versioni.  Ad esempio, se stai utilizzando la versione 23.07 e vuoi eseguire l'aggiornamento alla versione 25.06:
++
+.. Primo aggiornamento dal 23.07 al 24.06.
+.. Quindi aggiorna dalla versione 24.06 alla versione 25.06.
+
+
+
+
+
+NOTE: Quando si esegue l'aggiornamento tramite l'operatore Trident su OpenShift Container Platform, è necessario eseguire l'aggiornamento a Trident 21.01.1 o versione successiva.  L'operatore Trident rilasciato con la versione 21.01.0 contiene un problema noto che è stato risolto nella versione 21.01.1.  Per maggiori dettagli fare riferimento al https://github.com/NetApp/trident/issues/517["dettagli del problema su GitHub"^] .
+
+
+
+== Passaggio 2: determinare il metodo di installazione originale
+
+Per determinare quale versione hai utilizzato per installare originariamente Trident:
+
+. Utilizzo `kubectl get pods -n trident` per esaminare i baccelli.
++
+** Se non è presente alcun pod operatore, Trident è stato installato utilizzando `tridentctl` .
+** Se è presente un pod operatore, Trident è stato installato utilizzando l'operatore Trident manualmente o tramite Helm.
+
+
+. Se è presente un pod operatore, utilizzare `kubectl describe torc` per determinare se Trident è stato installato tramite Helm.
++
+** Se è presente un'etichetta Helm, Trident è stato installato tramite Helm.
+** Se non è presente alcuna etichetta Helm, Trident è stato installato manualmente utilizzando l'operatore Trident .
+
+
+
+
+
+
+== Passaggio 3: seleziona un metodo di aggiornamento
+
+In genere, dovresti eseguire l'aggiornamento utilizzando lo stesso metodo utilizzato per l'installazione iniziale, tuttavia puoilink:../trident-get-started/kubernetes-deploy.html#moving-between-installation-methods["spostarsi tra i metodi di installazione"] .  Ci sono due opzioni per potenziare Trident.
+
+* link:upgrade-operator.html["Aggiorna utilizzando l'operatore Trident"]
++
+
+TIP: Ti suggeriamo di rivederelink:upgrade-operator-overview.html["Comprendere il flusso di lavoro di aggiornamento dell'operatore"] prima di effettuare l'aggiornamento con l'operatore.
+
+* 
+

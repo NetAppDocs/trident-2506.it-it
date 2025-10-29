@@ -1,0 +1,44 @@
+---
+sidebar: sidebar 
+permalink: trident-protect/trident-protect-uninstall.html 
+keywords: trident, protect, netapp, uninstall, full version 
+summary: 'Potrebbe essere necessario rimuovere i componenti di protezione Trident se si esegue l"aggiornamento da una versione di prova a una versione completa del prodotto.' 
+---
+= Disinstallare Trident Protect
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Potrebbe essere necessario rimuovere i componenti di protezione Trident se si esegue l'aggiornamento da una versione di prova a una versione completa del prodotto.
+
+Per rimuovere Trident Protect, procedere come segue.
+
+.Passi
+. Rimuovere i file CR di protezione Trident :
++
+
+NOTE: Questo passaggio non è necessario per la versione 25.06 e successive.
+
++
+[source, console]
+----
+helm uninstall -n trident-protect trident-protect-crds
+----
+. Rimuovere la protezione Trident :
++
+[source, console]
+----
+helm uninstall -n trident-protect trident-protect
+----
+. Rimuovere lo spazio dei nomi Trident protect:
++
+[source, console]
+----
+kubectl delete ns trident-protect
+----
+

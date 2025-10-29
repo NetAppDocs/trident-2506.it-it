@@ -1,0 +1,100 @@
+---
+section: trident-use
+title: Usa Trident
+entries:
+- title: Preparare il nodo worker
+  url: "/trident-use/worker-node-prep.html"
+- title: Configurare e gestire i backend
+  entries:
+  - title: Panoramica
+    url: "/trident-use/backends.html"
+  - title: Azure NetApp Files
+    entries:
+    - title: Panoramica
+      url: "/trident-use/anf.html"
+    - title: Preparati alla configurazione
+      url: "/trident-use/anf-prep.html"
+    - title: Opzioni di configurazione ed esempi
+      url: "/trident-use/anf-examples.html"
+  - title: Google Cloud NetApp Volumes
+    entries:
+    - title: Panoramica
+      url: "/trident-use/gcnv.html"
+    - title: Preparati alla configurazione
+      url: "/trident-use/gcnv-prep.html"
+    - title: Opzioni di configurazione ed esempi
+      url: "/trident-use/gcnv-examples.html"
+  - title: Cloud Volumes Service per Google Cloud
+    url: "/trident-use/gcp.html"
+  - title: NetApp HCI o SolidFire
+    url: "/trident-use/element.html"
+  - title: Driver ONTAP SAN
+    entries:
+    - title: Panoramica
+      url: "/trident-use/ontap-san.html"
+    - title: Preparati alla configurazione
+      url: "/trident-use/ontap-san-prep.html"
+    - title: Opzioni di configurazione ed esempi
+      url: "/trident-use/ontap-san-examples.html"
+  - title: Driver NAS ONTAP
+    entries:
+    - title: Panoramica
+      url: "/trident-use/ontap-nas.html"
+    - title: Preparati alla configurazione
+      url: "/trident-use/ontap-nas-prep.html"
+    - title: Opzioni di configurazione ed esempi
+      url: "/trident-use/ontap-nas-examples.html"
+  - title: Amazon FSx for NetApp ONTAP
+    entries:
+    - title: Panoramica
+      url: "/trident-use/trident-fsx.html"
+    - title: Crea un ruolo IAM e un segreto AWS
+      url: "/trident-use/trident-fsx-iam-role.html"
+    - title: Installa Trident
+      url: "/trident-use/trident-fsx-install-trident.html"
+    - title: Configurare il backend di archiviazione
+      url: "/trident-use/trident-fsx-storage-backend.html"
+    - title: Configura la classe di archiviazione e il PVC
+      url: "/trident-use/trident-fsx-storageclass-pvc.html"
+    - title: Distribuisci l'applicazione di esempio
+      url: "/trident-use/trident-fsx-deploy-sample.html"
+    - title: Configurare il componente aggiuntivo Trident EKS sul cluster EKS
+      url: "/trident-use/trident-aws-addon.html"
+  - title: Crea backend con kubectl
+    url: "/trident-use/backend-kubectl.html"
+  - title: Gestire i backend
+    entries:
+    - title: Gestisci i backend con kubectl
+      url: "/trident-use/backend_ops_kubectl.html"
+    - title: Gestisci i backend con tridentctl
+      url: "/trident-use/backend_ops_tridentctl.html"
+    - title: Spostarsi tra le opzioni di gestione del backend
+      url: "/trident-use/backend_options.html"
+- title: Creare e gestire classi di archiviazione
+  entries:
+  - title: Creare una classe di archiviazione
+    url: "/trident-use/create-stor-class.html"
+  - title: Gestire le classi di archiviazione
+    url: "/trident-use/manage-stor-class.html"
+- title: Fornire e gestire i volumi
+  entries:
+  - title: Fornire un volume
+    url: "/trident-use/vol-provision.html"
+  - title: Espandi i volumi
+    url: "/trident-use/vol-expansion.html"
+  - title: Volumi di importazione
+    url: "/trident-use/vol-import.html"
+  - title: Personalizza i nomi dei volumi
+    url: "/trident-use/vol-custom-name.html"
+  - title: Condividere volumi NFS tra gli spazi dei nomi
+    url: "/trident-use/volume-share.html"
+  - title: Clonazione di volumi tra spazi dei nomi
+    url: "/trident-use/vol-clone-cross-namespace.html"
+  - title: Replicare i volumi utilizzando SnapMirror
+    url: "/trident-use/vol-volume-replicate.html"
+  - title: Utilizzare la topologia CSI
+    url: "/trident-use/csi-topology.html"
+  - title: Utilizzare gli snapshot
+    url: "/trident-use/vol-snapshots.html"
+  - title: Creare snapshot del gruppo di volumi
+    url: "/trident-use/vol-group-snapshots.html"

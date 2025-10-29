@@ -1,0 +1,14 @@
+---
+section: trident-reference
+title: Riferimento
+entries:
+- title: Porte Trident
+  url: "/trident-reference/ports.html"
+- title: API REST Trident
+  url: "/trident-reference/rest-api.html"
+- title: Opzioni della riga di comando
+  url: "/trident-reference/trident-cl.html"
+- title: Oggetti Kubernetes e Trident
+  url: "/trident-reference/objects.html"
+- title: Standard di sicurezza dei pod (PSS) e vincoli di contesto di sicurezza (SCC)
+  url: "/trident-reference/pod-security.html"

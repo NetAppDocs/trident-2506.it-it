@@ -1,0 +1,159 @@
+---
+sidebar: sidebar 
+permalink: trident-use/anf.html 
+keywords: trident backend, azure netapp files, smb volumes, smb, windows, drivers, access modes, rwo, rwx, rwp, rwop, file system, aks, managed identities, azure 
+summary: 'È possibile configurare Azure NetApp Files come backend per Trident.  È possibile collegare volumi NFS e SMB utilizzando un backend di Azure NetApp Files .  Trident supporta anche la gestione delle credenziali mediante identità gestite per i cluster di Azure Kubernetes Services (AKS).' 
+---
+= Configurare un backend di Azure NetApp Files
+:hardbreaks:
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile configurare Azure NetApp Files come backend per Trident.  È possibile collegare volumi NFS e SMB utilizzando un backend di Azure NetApp Files .  Trident supporta anche la gestione delle credenziali mediante identità gestite per i cluster di Azure Kubernetes Services (AKS).
+
+
+
+== Dettagli del driver di Azure NetApp Files
+
+Trident fornisce i seguenti driver di archiviazione Azure NetApp Files per comunicare con il cluster.  Le modalità di accesso supportate sono: _ReadWriteOnce_ (RWO), _ReadOnlyMany_ (ROX), _ReadWriteMany_ (RWX), _ReadWriteOncePod_ (RWOP).
+
+[cols="2, 1, 1, 2, 2"]
+|===
+| Autista | Protocollo | Modalità volume | Modalità di accesso supportate | Sistemi di file supportati 
+
+
+| `azure-netapp-files`  a| 
+NFS SMB
+ a| 
+File system
+ a| 
+RWO, ROX, RWX, RWOP
+ a| 
+`nfs`, `smb`
+
+|===
+
+
+=== Considerazioni
+
+* Il servizio Azure NetApp Files non supporta volumi inferiori a 50 GiB.  Trident crea automaticamente volumi da 50 GiB se viene richiesto un volume più piccolo.
+* Trident supporta volumi SMB montati su pod in esecuzione solo su nodi Windows.
+
+
+
+
+== Identità gestite per AKS
+
+Supporti Tridentlink:https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview["identità gestite"^] per i cluster di Azure Kubernetes Services.  Per sfruttare la gestione semplificata delle credenziali offerta dalle identità gestite, è necessario disporre di:
+
+* Un cluster Kubernetes distribuito tramite AKS
+* Identità gestite configurate sul cluster AKS Kubernetes
+* Trident installato che include il `cloudProvider` specificare `"Azure"` .
++
+[role="tabbed-block"]
+====
+.Operatore Trident
+--
+Per installare Trident utilizzando l'operatore Trident , modificare `tridentorchestrator_cr.yaml` impostare `cloudProvider` A `"Azure"` . Per esempio:
+
+[source, yaml]
+----
+apiVersion: trident.netapp.io/v1
+kind: TridentOrchestrator
+metadata:
+  name: trident
+spec:
+  debug: true
+  namespace: trident
+  imagePullPolicy: IfNotPresent
+  cloudProvider: "Azure"
+----
+--
+.Timone
+--
+L'esempio seguente installa i set Trident `cloudProvider` ad Azure utilizzando la variabile di ambiente `$CP` :
+
+[listing]
+----
+helm install trident trident-operator-100.2506.0.tgz --create-namespace --namespace <trident-namespace> --set cloudProvider=$CP
+----
+--
+.<code>tridentctl</code>
+--
+L'esempio seguente installa Trident e imposta il `cloudProvider` bandiera a `Azure` :
+
+[listing]
+----
+tridentctl install --cloud-provider="Azure" -n trident
+----
+--
+====
+
+
+
+
+== Identità cloud per AKS
+
+L'identità cloud consente ai pod Kubernetes di accedere alle risorse di Azure autenticandosi come identità del carico di lavoro anziché fornire credenziali Azure esplicite.
+
+Per sfruttare i vantaggi dell'identità cloud in Azure, è necessario disporre di:
+
+* Un cluster Kubernetes distribuito tramite AKS
+* Identità del carico di lavoro e oidc-issuer configurati sul cluster AKS Kubernetes
+* Trident installato che include il `cloudProvider` specificare `"Azure"` E `cloudIdentity` specificando l'identità del carico di lavoro
++
+[role="tabbed-block"]
+====
+.Operatore Trident
+--
+Per installare Trident utilizzando l'operatore Trident , modificare `tridentorchestrator_cr.yaml` impostare `cloudProvider` A `"Azure"` e impostare `cloudIdentity` A `azure.workload.identity/client-id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx` .
+
+Per esempio:
+
+[source, yaml]
+----
+apiVersion: trident.netapp.io/v1
+kind: TridentOrchestrator
+metadata:
+  name: trident
+spec:
+  debug: true
+  namespace: trident
+  imagePullPolicy: IfNotPresent
+  cloudProvider: "Azure"
+  cloudIdentity: 'azure.workload.identity/client-id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx' # Edit
+----
+--
+.Timone
+--
+Impostare i valori per i flag *cloud-provider (CP)* e *cloud-identity (CI)* utilizzando le seguenti variabili di ambiente:
+
+`export CP="Azure"`
+`export CI="'azure.workload.identity/client-id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx'"`
+
+L'esempio seguente installa Trident e imposta `cloudProvider` ad Azure utilizzando la variabile di ambiente `$CP` e imposta il `cloudIdentity` utilizzando la variabile d'ambiente `$CI` :
+
+[listing]
+----
+helm install trident trident-operator-100.6.0.tgz --set cloudProvider=$CP --set cloudIdentity="$CI"
+----
+--
+.<code>tridentctl</code>
+--
+Impostare i valori per i flag *cloud provider* e *cloud identity* utilizzando le seguenti variabili di ambiente:
+
+`export CP="Azure"`
+`export CI="azure.workload.identity/client-id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx"`
+
+L'esempio seguente installa Trident e imposta il `cloud-provider` bandiera a `$CP` , E `cloud-identity` A `$CI` :
+
+[listing]
+----
+tridentctl install --cloud-provider=$CP --cloud-identity="$CI" -n trident
+----
+--
+====
+

@@ -1,0 +1,77 @@
+---
+sidebar: sidebar 
+permalink: trident-docker/collect-logs-docker.html 
+keywords: deploy, Trident, trident for docker, docker, logs, binary, managed plugin 
+summary: È possibile raccogliere i registri per ottenere aiuto nella risoluzione dei problemi.  Il metodo utilizzato per raccogliere i log varia in base alla modalità di esecuzione del plugin Docker. 
+---
+= Raccogli i registri
+:hardbreaks:
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile raccogliere i registri per ottenere aiuto nella risoluzione dei problemi.  Il metodo utilizzato per raccogliere i log varia in base alla modalità di esecuzione del plugin Docker.
+
+
+
+== Raccogliere i registri per la risoluzione dei problemi
+
+.Passi
+. Se stai eseguendo Trident utilizzando il metodo di plugin gestito consigliato (ad esempio, utilizzando `docker plugin` comandi), visualizzali come segue:
++
+[source, console]
+----
+docker plugin ls
+----
++
+[listing]
+----
+ID                  NAME                DESCRIPTION                          ENABLED
+4fb97d2b956b        netapp:latest       nDVP - NetApp Docker Volume Plugin   false
+journalctl -u docker | grep 4fb97d2b956b
+----
++
+Il livello di registrazione standard dovrebbe consentire di diagnosticare la maggior parte dei problemi.  Se ritieni che ciò non sia sufficiente, puoi abilitare la registrazione del debug.
+
+. Per abilitare la registrazione del debug, installare il plugin con la registrazione del debug abilitata:
++
+[source, console]
+----
+docker plugin install netapp/trident-plugin:<version> --alias <alias> debug=true
+----
++
+Oppure, abilita la registrazione del debug quando il plugin è già installato:
+
++
+[source, console]
+----
+docker plugin disable <plugin>
+----
++
+[source, console]
+----
+docker plugin set <plugin> debug=true
+----
++
+[source, console]
+----
+docker plugin enable <plugin>
+----
+. Se si esegue il binario stesso sull'host, i registri sono disponibili nell'host `/var/log/netappdvp` elenco.  Per abilitare la registrazione del debug, specificare `-debug` quando esegui il plugin.
+
+
+
+
+== Suggerimenti generali per la risoluzione dei problemi
+
+* Il problema più comune che si verifica con i nuovi utenti è una configurazione errata che impedisce l'inizializzazione del plugin.  Quando ciò accade, è probabile che venga visualizzato un messaggio come questo quando si tenta di installare o abilitare il plugin:
++
+`Error response from daemon: dial unix /run/docker/plugins/<id>/netapp.sock: connect: no such file or directory`
+
++
+Ciò significa che il plugin non è riuscito ad avviarsi.  Fortunatamente, il plugin è stato creato con una funzionalità di registrazione completa che dovrebbe aiutarti a diagnosticare la maggior parte dei problemi che potresti incontrare.
+
+* Se si verificano problemi con il montaggio di un fotovoltaico su un contenitore, assicurarsi che `rpcbind` è installato e funzionante.  Utilizzare il gestore pacchetti richiesto per il sistema operativo host e verificare se `rpcbind` è in esecuzione.  È possibile controllare lo stato del servizio rpcbind eseguendo un `systemctl status rpcbind` o il suo equivalente.
+

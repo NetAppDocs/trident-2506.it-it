@@ -1,0 +1,625 @@
+---
+sidebar: sidebar 
+permalink: trident-protect/trident-protect-use-snapmirror-replication.html 
+keywords: trident, protect, netapp, snapmirror, data, asynchronous, replication, clusters 
+summary: 'Utilizzando Trident Protect, è possibile sfruttare le funzionalità di replica asincrona della tecnologia NetApp SnapMirror per replicare i dati e le modifiche delle applicazioni da un backend di storage all"altro, sullo stesso cluster o tra cluster diversi.' 
+---
+= Replica le applicazioni utilizzando NetApp SnapMirror e Trident Protect
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Utilizzando Trident Protect, è possibile sfruttare le funzionalità di replica asincrona della tecnologia NetApp SnapMirror per replicare i dati e le modifiche delle applicazioni da un backend di storage all'altro, sullo stesso cluster o tra cluster diversi.
+
+
+
+== Annotazioni e etichette dello spazio dei nomi durante le operazioni di ripristino e failover
+
+Durante le operazioni di ripristino e failover, le etichette e le annotazioni nello spazio dei nomi di destinazione vengono create in modo da corrispondere alle etichette e alle annotazioni nello spazio dei nomi di origine.  Vengono aggiunte etichette o annotazioni provenienti dallo spazio dei nomi di origine che non esistono nello spazio dei nomi di destinazione e tutte le etichette o annotazioni già esistenti vengono sovrascritte in modo che corrispondano al valore dello spazio dei nomi di origine.  Le etichette o le annotazioni che esistono solo nello spazio dei nomi di destinazione rimangono invariate.
+
+
+NOTE: Se si utilizza Red Hat OpenShift, è importante tenere presente il ruolo fondamentale delle annotazioni dello spazio dei nomi negli ambienti OpenShift. Le annotazioni dello spazio dei nomi garantiscono che i pod ripristinati aderiscano alle autorizzazioni appropriate e alle configurazioni di sicurezza definite dai vincoli del contesto di sicurezza (SCC) di OpenShift e possano accedere ai volumi senza problemi di autorizzazione. Per maggiori informazioni, fare riferimento al https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/authentication_and_authorization/managing-pod-security-policies["Documentazione sui vincoli del contesto di sicurezza di OpenShift"^] .
+
+È possibile impedire che annotazioni specifiche nello spazio dei nomi di destinazione vengano sovrascritte impostando la variabile di ambiente Kubernetes `RESTORE_SKIP_NAMESPACE_ANNOTATIONS` prima di eseguire l'operazione di ripristino o failover. Per esempio:
+
+[source, console]
+----
+helm upgrade trident-protect --set restoreSkipNamespaceAnnotations=<annotation_key_to_skip_1>,<annotation_key_to_skip_2> --reuse-values
+----
+
+NOTE: Quando si esegue un'operazione di ripristino o failover, tutte le annotazioni e le etichette dello spazio dei nomi specificate in `restoreSkipNamespaceAnnotations` E `restoreSkipNamespaceLabels` sono esclusi dall'operazione di ripristino o failover. Assicurarsi che queste impostazioni siano configurate durante l'installazione iniziale di Helm. Per saperne di più, fare riferimento a link:../trident-protect/trident-protect-customize-installation.html#configure-autoSupport-and-namespace-filtering-options["Configurare le opzioni di filtraggio AutoSupport e namespace"].
+
+Se hai installato l'applicazione sorgente utilizzando Helm con `--create-namespace` bandiera, un trattamento speciale è riservato al `name` etichetta chiave.  Durante il processo di ripristino o failover, Trident Protect copia questa etichetta nello spazio dei nomi di destinazione, ma aggiorna il valore al valore dello spazio dei nomi di destinazione se il valore dell'origine corrisponde allo spazio dei nomi di origine.  Se questo valore non corrisponde allo spazio dei nomi di origine, viene copiato nello spazio dei nomi di destinazione senza modifiche.
+
+
+
+=== Esempio
+
+L'esempio seguente presenta uno spazio dei nomi di origine e di destinazione, ciascuno con annotazioni ed etichette diverse.  È possibile visualizzare lo stato dello spazio dei nomi di destinazione prima e dopo l'operazione e il modo in cui le annotazioni e le etichette vengono combinate o sovrascritte nello spazio dei nomi di destinazione.
+
+
+
+==== Prima dell'operazione di ripristino o failover
+
+La tabella seguente illustra lo stato degli spazi dei nomi di origine e di destinazione di esempio prima dell'operazione di ripristino o failover:
+
+[cols="1,2a,2a"]
+|===
+| Spazio dei nomi | Annotazioni | Etichette 
+
+
+| Namespace ns-1 (fonte)  a| 
+* annotation.one/key: "updatedvalue"
+* annotation.two/key: "true"
+
+ a| 
+* ambiente=produzione
+* conformità=hipaa
+* nome=ns-1
+
+
+
+
+| Namespace ns-2 (destinazione)  a| 
+* annotation.one/key: "true"
+* annotazione.tre/chiave: "falso"
+
+ a| 
+* ruolo=database
+
+
+|===
+
+
+==== Dopo l'operazione di ripristino
+
+La tabella seguente illustra lo stato dello spazio dei nomi di destinazione di esempio dopo l'operazione di ripristino o failover.  Alcune chiavi sono state aggiunte, alcune sono state sovrascritte e `name` l'etichetta è stata aggiornata per corrispondere allo spazio dei nomi di destinazione:
+
+[cols="1,2a,2a"]
+|===
+| Spazio dei nomi | Annotazioni | Etichette 
+
+
+| Namespace ns-2 (destinazione)  a| 
+* annotation.one/key: "updatedvalue"
+* annotation.two/key: "true"
+* annotazione.tre/chiave: "falso"
+
+ a| 
+* nome=ns-2
+* conformità=hipaa
+* ambiente=produzione
+* ruolo=database
+
+
+|===
+
+NOTE: È possibile configurare Trident Protect in modo che blocchi e sblocchi i file system durante le operazioni di protezione dei dati. link:trident-protect-requirements.html#protecting-data-with-kubevirt-vms["Scopri di più sulla configurazione del congelamento del file system con Trident Protect"].
+
+
+
+== Hook di esecuzione durante le operazioni di failover e reverse
+
+Quando si utilizza la relazione AppMirror per proteggere l'applicazione, è necessario essere a conoscenza di comportamenti specifici relativi agli hook di esecuzione durante le operazioni di failover e reverse.
+
+* Durante il failover, gli hook di esecuzione vengono copiati automaticamente dal cluster di origine al cluster di destinazione.  Non è necessario ricrearli manualmente.  Dopo il failover, gli hook di esecuzione sono presenti nell'applicazione e verranno eseguiti durante tutte le azioni rilevanti.
+* Durante la sincronizzazione inversa o la risincronizzazione inversa, tutti gli hook di esecuzione esistenti sull'applicazione vengono rimossi.  Quando l'applicazione di origine diventa l'applicazione di destinazione, questi hook di esecuzione non sono validi e vengono eliminati per impedirne l'esecuzione.
+
+
+Per saperne di più sugli hook di esecuzione, fare riferimento alink:../trident-protect/trident-protect-use-execution-hooks.html["Gestisci i ganci di esecuzione Trident Protect"] .
+
+
+
+== Impostare una relazione di replicazione
+
+L'impostazione di una relazione di replicazione comporta quanto segue:
+
+* Scegliere la frequenza con cui si desidera che Trident Protect esegua uno snapshot dell'app (che include le risorse Kubernetes dell'app e gli snapshot del volume per ciascuno dei volumi dell'app)
+* Scelta della pianificazione della replica (include risorse Kubernetes e dati di volume persistenti)
+* Impostazione dell'ora in cui verrà scattata l'istantanea
+
+
+.Passi
+. Nel cluster di origine, creare un AppVault per l'applicazione di origine.  A seconda del provider di archiviazione, modifica un esempio inlink:trident-protect-appvault-custom-resources.html["Risorse personalizzate di AppVault"] per adattarsi al tuo ambiente:
++
+[role="tabbed-block"]
+====
+.Crea un AppVault utilizzando una CR
+--
+.. Crea il file di risorse personalizzate (CR) e assegnagli un nome (ad esempio, `trident-protect-appvault-primary-source.yaml` ).
+.. Configurare i seguenti attributi:
++
+*** *metadata.name*: (_Obbligatorio_) Nome della risorsa personalizzata di AppVault.  Prendi nota del nome scelto, perché altri file CR necessari per una relazione di replica fanno riferimento a questo valore.
+*** *spec.providerConfig*: (_Obbligatorio_) Memorizza la configurazione necessaria per accedere ad AppVault utilizzando il provider specificato.  Scegli un bucketName e tutti gli altri dettagli necessari per il tuo provider.  Prendi nota dei valori scelti, perché altri file CR necessari per una relazione di replicazione fanno riferimento a questi valori.  Fare riferimento alink:trident-protect-appvault-custom-resources.html["Risorse personalizzate di AppVault"] per esempi di CR AppVault con altri provider.
+*** *spec.providerCredentials*: (_Obbligatorio_) Memorizza i riferimenti a qualsiasi credenziale richiesta per accedere ad AppVault utilizzando il provider specificato.
++
+**** *spec.providerCredentials.valueFromSecret*: (_Obbligatorio_) Indica che il valore delle credenziali deve provenire da un segreto.
++
+***** *key*: (_Obbligatorio_) La chiave valida del segreto da cui effettuare la selezione.
+***** *name*: (_Obbligatorio_) Nome del segreto contenente il valore per questo campo.  Devono trovarsi nello stesso namespace.
+
+
+**** *spec.providerCredentials.secretAccessKey*: (_Obbligatorio_) La chiave di accesso utilizzata per accedere al provider.  Il *nome* deve corrispondere a *spec.providerCredentials.valueFromSecret.name*.
+
+
+*** *spec.providerType*: (_Obbligatorio_) Determina chi fornisce il backup; ad esempio, NetApp ONTAP S3, S3 generico, Google Cloud o Microsoft Azure.  Valori possibili:
++
+**** aws
+**** azzurro
+**** gcp
+**** generico-s3
+**** ontap-s3
+**** storagegrid-s3
+
+
+
+
+.. Dopo aver popolato il `trident-protect-appvault-primary-source.yaml` file con i valori corretti, applicare CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-appvault-primary-source.yaml -n trident-protect
+----
+
+
+--
+.Creare un AppVault utilizzando la CLI
+--
+.. Crea AppVault, sostituendo i valori tra parentesi con le informazioni del tuo ambiente:
++
+[source, console]
+----
+tridentctl-protect create vault Azure <vault-name> --account <account-name> --bucket <bucket-name> --secret <secret-name>
+----
+
+
+--
+====
+. Nel cluster di origine, creare l'applicazione di origine CR:
++
+[role="tabbed-block"]
+====
+.Creare l'applicazione sorgente utilizzando un CR
+--
+.. Crea il file di risorse personalizzate (CR) e assegnagli un nome (ad esempio, `trident-protect-app-source.yaml` ).
+.. Configurare i seguenti attributi:
++
+*** *metadata.name*: (_Obbligatorio_) Nome della risorsa personalizzata dell'applicazione.  Prendi nota del nome scelto, perché altri file CR necessari per una relazione di replica fanno riferimento a questo valore.
+*** *spec.includedNamespaces*: (_Obbligatorio_) Un array di namespace ed etichette associate.  Utilizzare i nomi degli spazi dei nomi e, facoltativamente, restringere l'ambito degli spazi dei nomi con etichette per specificare le risorse presenti negli spazi dei nomi elencati qui.  Lo spazio dei nomi dell'applicazione deve far parte di questo array.
++
+*Esempio YAML*:
+
++
+[source, yaml]
+----
+---
+apiVersion: protect.trident.netapp.io/v1
+kind: Application
+metadata:
+  name: my-app-name
+  namespace: my-app-namespace
+spec:
+  includedNamespaces:
+    - namespace: my-app-namespace
+      labelSelector: {}
+----
+
+
+.. Dopo aver popolato il `trident-protect-app-source.yaml` file con i valori corretti, applicare CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-app-source.yaml -n my-app-namespace
+----
+
+
+--
+.Creare l'applicazione sorgente utilizzando la CLI
+--
+.. Creare l'applicazione sorgente. Per esempio:
++
+[source, console]
+----
+tridentctl-protect create app <my-app-name> --namespaces <namespaces-to-be-included> -n <my-app-namespace>
+----
+
+
+--
+====
+. Facoltativamente, sul cluster di origine, eseguire uno snapshot dell'applicazione di origine.  Questo snapshot viene utilizzato come base per l'applicazione sul cluster di destinazione.  Se si salta questo passaggio, sarà necessario attendere l'esecuzione del prossimo snapshot pianificato per avere uno snapshot recente.
++
+[NOTE]
+====
+Oltre alla pianificazione fornita di seguito, si consiglia di creare una pianificazione di snapshot giornalieri separata con un periodo di conservazione di 7 giorni per mantenere uno snapshot comune tra i cluster ONTAP peered.  Ciò garantisce che gli snapshot siano disponibili fino a 7 giorni, ma il periodo di conservazione può essere personalizzato in base alle esigenze dell'utente.
+
+In caso di failover, il sistema può utilizzare questi snapshot per un massimo di 7 giorni per le operazioni inverse.  Questo approccio rende il processo inverso più rapido ed efficiente, perché verranno trasferite solo le modifiche apportate dall'ultimo snapshot, non tutti i dati.
+
+Se una pianificazione esistente per l'applicazione soddisfa già i requisiti di conservazione desiderati, non sono necessarie pianificazioni aggiuntive.
+
+====
++
+[role="tabbed-block"]
+====
+.Scatta un'istantanea utilizzando un CR
+--
+.. Creare una pianificazione di replica per l'applicazione di origine:
++
+... Crea il file di risorse personalizzate (CR) e assegnagli un nome (ad esempio, `trident-protect-schedule.yaml` ).
+... Configurare i seguenti attributi:
++
+**** *metadata.name*: (_Obbligatorio_) Nome della risorsa personalizzata della pianificazione.
+**** *spec.AppVaultRef*: (_Obbligatorio_) Questo valore deve corrispondere al campo metadata.name dell'AppVault per l'applicazione di origine.
+**** *spec.ApplicationRef*: (_Obbligatorio_) Questo valore deve corrispondere al campo metadata.name del CR dell'applicazione di origine.
+**** *spec.backupRetention*: (_Obbligatorio_) Questo campo è obbligatorio e il valore deve essere impostato su 0.
+**** *spec.enabled*: Deve essere impostato su true.
+**** *spec.granularity*: Deve essere impostato su `Custom` .
+**** *spec.recurrenceRule*: definisce una data di inizio in ora UTC e un intervallo di ricorrenza.
+**** *spec.snapshotRetention*: Deve essere impostato su 2.
++
+Esempio YAML:
+
++
+[source, yaml]
+----
+---
+apiVersion: protect.trident.netapp.io/v1
+kind: Schedule
+metadata:
+  name: appmirror-schedule-0e1f88ab-f013-4bce-8ae9-6afed9df59a1
+  namespace: my-app-namespace
+spec:
+  appVaultRef: generic-s3-trident-protect-src-bucket-04b6b4ec-46a3-420a-b351-45795e1b5e34
+  applicationRef: my-app-name
+  backupRetention: "0"
+  enabled: true
+  granularity: custom
+  recurrenceRule: |-
+    DTSTART:20220101T000200Z
+    RRULE:FREQ=MINUTELY;INTERVAL=5
+  snapshotRetention: "2"
+----
+
+
+... Dopo aver popolato il `trident-protect-schedule.yaml` file con i valori corretti, applicare CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-schedule.yaml -n my-app-namespace
+----
+
+
+
+
+--
+.Scatta uno snapshot utilizzando la CLI
+--
+.. Crea lo snapshot sostituendo i valori tra parentesi con le informazioni provenienti dal tuo ambiente. Per esempio:
++
+[source, console]
+----
+tridentctl-protect create snapshot <my_snapshot_name> --appvault <my_appvault_name> --app <name_of_app_to_snapshot> -n <application_namespace>
+----
+
+
+--
+====
+. Nel cluster di destinazione, crea un'applicazione di origine AppVault CR identica all'AppVault CR applicata nel cluster di origine e assegnale un nome (ad esempio, `trident-protect-appvault-primary-destination.yaml` ).
+. Applicare il CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-appvault-primary-destination.yaml -n my-app-namespace
+----
+. Creare un CR AppVault di destinazione per l'applicazione di destinazione sul cluster di destinazione.  A seconda del provider di archiviazione, modificare un esempio inlink:trident-protect-appvault-custom-resources.html["Risorse personalizzate di AppVault"] per adattarsi al tuo ambiente:
++
+.. Crea il file di risorse personalizzate (CR) e assegnagli un nome (ad esempio, `trident-protect-appvault-secondary-destination.yaml` ).
+.. Configurare i seguenti attributi:
++
+*** *metadata.name*: (_Obbligatorio_) Nome della risorsa personalizzata di AppVault.  Prendi nota del nome scelto, perché altri file CR necessari per una relazione di replica fanno riferimento a questo valore.
+*** *spec.providerConfig*: (_Obbligatorio_) Memorizza la configurazione necessaria per accedere ad AppVault utilizzando il provider specificato.  Scegli un `bucketName` e qualsiasi altro dettaglio necessario per il tuo fornitore.  Prendi nota dei valori scelti, perché altri file CR necessari per una relazione di replicazione fanno riferimento a questi valori.  Fare riferimento alink:trident-protect-appvault-custom-resources.html["Risorse personalizzate di AppVault"] per esempi di CR AppVault con altri provider.
+*** *spec.providerCredentials*: (_Obbligatorio_) Memorizza i riferimenti a qualsiasi credenziale richiesta per accedere ad AppVault utilizzando il provider specificato.
++
+**** *spec.providerCredentials.valueFromSecret*: (_Obbligatorio_) Indica che il valore delle credenziali deve provenire da un segreto.
++
+***** *key*: (_Obbligatorio_) La chiave valida del segreto da cui effettuare la selezione.
+***** *name*: (_Obbligatorio_) Nome del segreto contenente il valore per questo campo.  Devono trovarsi nello stesso namespace.
+
+
+**** *spec.providerCredentials.secretAccessKey*: (_Obbligatorio_) La chiave di accesso utilizzata per accedere al provider.  Il *nome* deve corrispondere a *spec.providerCredentials.valueFromSecret.name*.
+
+
+*** *spec.providerType*: (_Obbligatorio_) Determina chi fornisce il backup; ad esempio, NetApp ONTAP S3, S3 generico, Google Cloud o Microsoft Azure.  Valori possibili:
++
+**** aws
+**** azzurro
+**** gcp
+**** generico-s3
+**** ontap-s3
+**** storagegrid-s3
+
+
+
+
+.. Dopo aver popolato il `trident-protect-appvault-secondary-destination.yaml` file con i valori corretti, applicare CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-appvault-secondary-destination.yaml -n my-app-namespace
+----
+
+
+. Nel cluster di destinazione, creare un file CR AppMirrorRelationship:
++
+[role="tabbed-block"]
+====
+.Creare un AppMirrorRelationship utilizzando un CR
+--
+.. Crea il file di risorse personalizzate (CR) e assegnagli un nome (ad esempio, `trident-protect-relationship.yaml` ).
+.. Configurare i seguenti attributi:
++
+*** *metadata.name:* (obbligatorio) Nome della risorsa personalizzata AppMirrorRelationship.
+*** *spec.destinationAppVaultRef*: (_Obbligatorio_) Questo valore deve corrispondere al nome dell'AppVault per l'applicazione di destinazione sul cluster di destinazione.
+*** *spec.namespaceMapping*: (_Obbligatorio_) Gli spazi dei nomi di destinazione e di origine devono corrispondere allo spazio dei nomi dell'applicazione definito nel rispettivo CR dell'applicazione.
+*** *spec.sourceAppVaultRef*: (_Obbligatorio_) Questo valore deve corrispondere al nome dell'AppVault per l'applicazione di origine.
+*** *spec.sourceApplicationName*: (_Obbligatorio_) Questo valore deve corrispondere al nome dell'applicazione sorgente definita nel CR dell'applicazione sorgente.
+*** *spec.storageClassName*: (_Obbligatorio_) Scegli il nome di una classe di archiviazione valida sul cluster.  La classe di archiviazione deve essere collegata a una VM di archiviazione ONTAP collegata in peering con l'ambiente di origine.
+*** *spec.recurrenceRule*: definisce una data di inizio in ora UTC e un intervallo di ricorrenza.
++
+Esempio YAML:
+
++
+[source, yaml]
+----
+---
+apiVersion: protect.trident.netapp.io/v1
+kind: AppMirrorRelationship
+metadata:
+  name: amr-16061e80-1b05-4e80-9d26-d326dc1953d8
+  namespace: my-app-namespace
+spec:
+  desiredState: Established
+  destinationAppVaultRef: generic-s3-trident-protect-dst-bucket-8fe0b902-f369-4317-93d1-ad7f2edc02b5
+  namespaceMapping:
+    - destination: my-app-namespace
+      source: my-app-namespace
+  recurrenceRule: |-
+    DTSTART:20220101T000200Z
+    RRULE:FREQ=MINUTELY;INTERVAL=5
+  sourceAppVaultRef: generic-s3-trident-protect-src-bucket-b643cc50-0429-4ad5-971f-ac4a83621922
+  sourceApplicationName: my-app-name
+  sourceApplicationUID: 7498d32c-328e-4ddd-9029-122540866aeb
+  storageClassName: sc-vsim-2
+----
+
+
+.. Dopo aver popolato il `trident-protect-relationship.yaml` file con i valori corretti, applicare CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-relationship.yaml -n my-app-namespace
+----
+
+
+--
+.Creare un AppMirrorRelationship utilizzando la CLI
+--
+.. Crea e applica l'oggetto AppMirrorRelationship, sostituendo i valori tra parentesi con le informazioni provenienti dal tuo ambiente. Per esempio:
++
+[source, console]
+----
+tridentctl-protect create appmirrorrelationship <name_of_appmirorrelationship> --destination-app-vault <my_vault_name> --recurrence-rule <rule> --source-app <my_source_app> --source-app-vault <my_source_app_vault> -n <application_namespace>
+----
+
+
+--
+====
+. (_Facoltativo_) Nel cluster di destinazione, controllare lo stato e la relazione di replica:
++
+[source, console]
+----
+kubectl get amr -n my-app-namespace <relationship name> -o=jsonpath='{.status}' | jq
+----
+
+
+
+
+=== Failover sul cluster di destinazione
+
+Utilizzando Trident Protect, è possibile eseguire il failover delle applicazioni replicate su un cluster di destinazione.  Questa procedura interrompe la relazione di replica e porta l'app online sul cluster di destinazione.  Trident Protect non arresta l'app sul cluster di origine se era operativa.
+
+.Passi
+. Nel cluster di destinazione, modificare il file CR AppMirrorRelationship (ad esempio, `trident-protect-relationship.yaml` ) e modificare il valore di *spec.desiredState* in `Promoted` .
+. Salvare il file CR.
+. Applicare il CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-relationship.yaml -n my-app-namespace
+----
+. (_Facoltativo_) Creare tutte le pianificazioni di protezione necessarie sull'applicazione sottoposta a failover.
+. (_Facoltativo_) Controllare lo stato e la situazione della relazione di replicazione:
++
+[source, console]
+----
+kubectl get amr -n my-app-namespace <relationship name> -o=jsonpath='{.status}' | jq
+----
+
+
+
+
+=== Risincronizzare una relazione di replicazione non riuscita
+
+L'operazione di risincronizzazione ristabilisce la relazione di replica.  Dopo aver eseguito un'operazione di risincronizzazione, l'applicazione di origine diventa l'applicazione in esecuzione e tutte le modifiche apportate all'applicazione in esecuzione sul cluster di destinazione vengono ignorate.
+
+Il processo arresta l'app sul cluster di destinazione prima di ristabilire la replica.
+
+
+IMPORTANT: Tutti i dati scritti nell'applicazione di destinazione durante il failover andranno persi.
+
+.Passi
+. Facoltativo: sul cluster di origine, creare uno snapshot dell'applicazione di origine.  Ciò garantisce che vengano acquisite le ultime modifiche dal cluster di origine.
+. Nel cluster di destinazione, modificare il file CR AppMirrorRelationship (ad esempio, `trident-protect-relationship.yaml` ) e modificare il valore di spec.desiredState in `Established` .
+. Salvare il file CR.
+. Applicare il CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-relationship.yaml -n my-app-namespace
+----
+. Se sono state create delle pianificazioni di protezione sul cluster di destinazione per proteggere l'applicazione sottoposta a failover, rimuoverle.  Tutte le pianificazioni rimanenti causano errori negli snapshot del volume.
+
+
+
+
+=== Risincronizzazione inversa di una relazione di replicazione non riuscita
+
+Quando si esegue la risincronizzazione inversa di una relazione di replicazione non riuscita, l'applicazione di destinazione diventa l'applicazione di origine e l'origine diventa la destinazione.  Le modifiche apportate all'applicazione di destinazione durante il failover vengono mantenute.
+
+.Passi
+. Nel cluster di destinazione originale, eliminare il CR AppMirrorRelationship.  Ciò fa sì che la destinazione diventi la sorgente.  Se sul nuovo cluster di destinazione sono presenti pianificazioni di protezione rimanenti, rimuoverle.
+. Imposta una relazione di replica applicando i file CR utilizzati originariamente per impostare la relazione ai cluster opposti.
+. Assicurarsi che la nuova destinazione (cluster di origine originale) sia configurata con entrambi i CR di AppVault.
+. Impostare una relazione di replicazione sul cluster opposto, configurando i valori per la direzione inversa.
+
+
+
+
+== Invertire la direzione di replicazione dell'applicazione
+
+Quando si inverte la direzione della replica, Trident Protect sposta l'applicazione sul backend di archiviazione di destinazione, continuando a replicare sul backend di archiviazione di origine.  Trident Protect arresta l'applicazione di origine e replica i dati nella destinazione prima di eseguire il failover sull'app di destinazione.
+
+In questa situazione si scambiano la sorgente e la destinazione.
+
+.Passi
+. Nel cluster di origine, creare uno snapshot di arresto:
++
+[role="tabbed-block"]
+====
+.Creare uno snapshot di arresto utilizzando un CR
+--
+.. Disattivare le pianificazioni dei criteri di protezione per l'applicazione di origine.
+.. Creare un file CR ShutdownSnapshot:
++
+... Crea il file di risorse personalizzate (CR) e assegnagli un nome (ad esempio, `trident-protect-shutdownsnapshot.yaml` ).
+... Configurare i seguenti attributi:
++
+**** *metadata.name*: (_Obbligatorio_) Nome della risorsa personalizzata.
+**** *spec.AppVaultRef*: (_Obbligatorio_) Questo valore deve corrispondere al campo metadata.name dell'AppVault per l'applicazione di origine.
+**** *spec.ApplicationRef*: (_Obbligatorio_) Questo valore deve corrispondere al campo metadata.name del file CR dell'applicazione di origine.
++
+Esempio YAML:
+
++
+[source, yaml]
+----
+---
+apiVersion: protect.trident.netapp.io/v1
+kind: ShutdownSnapshot
+metadata:
+  name: replication-shutdown-snapshot-afc4c564-e700-4b72-86c3-c08a5dbe844e
+  namespace: my-app-namespace
+spec:
+  appVaultRef: generic-s3-trident-protect-src-bucket-04b6b4ec-46a3-420a-b351-45795e1b5e34
+  applicationRef: my-app-name
+----
+
+
+
+
+.. Dopo aver popolato il `trident-protect-shutdownsnapshot.yaml` file con i valori corretti, applicare CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-shutdownsnapshot.yaml -n my-app-namespace
+----
+
+
+--
+.Creare uno snapshot di arresto utilizzando la CLI
+--
+.. Crea lo snapshot di arresto, sostituendo i valori tra parentesi con le informazioni provenienti dal tuo ambiente. Per esempio:
++
+[source, console]
+----
+tridentctl-protect create shutdownsnapshot <my_shutdown_snapshot> --appvault <my_vault> --app <app_to_snapshot> -n <application_namespace>
+----
+
+
+--
+====
+. Nel cluster di origine, una volta completato lo snapshot di arresto, ottenere lo stato dello snapshot di arresto:
++
+[source, console]
+----
+kubectl get shutdownsnapshot -n my-app-namespace <shutdown_snapshot_name> -o yaml
+----
+. Nel cluster di origine, trova il valore di *shutdownsnapshot.status.appArchivePath* utilizzando il seguente comando e registra l'ultima parte del percorso del file (chiamato anche basename; sarà tutto ciò che segue l'ultima barra):
++
+[source, console]
+----
+k get shutdownsnapshot -n my-app-namespace <shutdown_snapshot_name> -o jsonpath='{.status.appArchivePath}'
+----
+. Eseguire un failover dal nuovo cluster di destinazione al nuovo cluster di origine, con la seguente modifica:
++
+
+NOTE: Nel passaggio 2 della procedura di failover, includere `spec.promotedSnapshot` nel file CR AppMirrorRelationship e impostarne il valore sul nome base registrato nel passaggio 3 precedente.
+
+. Eseguire i passaggi di risincronizzazione inversa in<<Risincronizzazione inversa di una relazione di replicazione non riuscita>> .
+. Abilitare le pianificazioni di protezione sul nuovo cluster di origine.
+
+
+
+
+=== Risultato
+
+A causa della replicazione inversa si verificano le seguenti azioni:
+
+* Viene creato uno snapshot delle risorse Kubernetes dell'app sorgente originale.
+* I pod dell'app sorgente originale vengono arrestati correttamente eliminando le risorse Kubernetes dell'app (lasciando in posizione PVC e PV).
+* Dopo aver arrestato i pod, vengono acquisiti e replicati gli snapshot dei volumi dell'app.
+* Le relazioni SnapMirror vengono interrotte, rendendo i volumi di destinazione pronti per la lettura/scrittura.
+* Le risorse Kubernetes dell'app vengono ripristinate dallo snapshot precedente all'arresto, utilizzando i dati del volume replicati dopo l'arresto dell'app sorgente originale.
+* La replicazione viene ristabilita nella direzione inversa.
+
+
+
+
+=== Eseguire il failback delle applicazioni al cluster di origine originale
+
+Utilizzando Trident Protect, è possibile ottenere il "fail back" dopo un'operazione di failover utilizzando la seguente sequenza di operazioni.  In questo flusso di lavoro per ripristinare la direzione di replicazione originale, Trident Protect replica (risincronizza) tutte le modifiche apportate all'applicazione di origine prima di invertire la direzione di replicazione.
+
+Questo processo inizia da una relazione che ha completato un failover verso una destinazione e prevede i seguenti passaggi:
+
+* Inizia con uno stato di failover.
+* Risincronizza inversamente la relazione di replicazione.
++
+
+CAUTION: Non eseguire una normale operazione di risincronizzazione, poiché ciò eliminerà i dati scritti nel cluster di destinazione durante la procedura di failover.
+
+* Invertire la direzione della replicazione.
+
+
+.Passi
+. Eseguire il<<Risincronizzazione inversa di una relazione di replicazione non riuscita>> passi.
+. Eseguire il<<Invertire la direzione di replicazione dell'applicazione>> passi.
+
+
+
+
+=== Elimina una relazione di replicazione
+
+È possibile eliminare una relazione di replicazione in qualsiasi momento.  Quando si elimina la relazione di replica dell'applicazione, si ottengono due applicazioni separate senza alcuna relazione tra loro.
+
+.Passi
+. Nel cluster di destinazione corrente, eliminare il CR AppMirrorRelationship:
++
+[source, console]
+----
+kubectl delete -f trident-protect-relationship.yaml -n my-app-namespace
+----
+

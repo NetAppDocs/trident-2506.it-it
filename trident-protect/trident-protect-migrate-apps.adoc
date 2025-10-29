@@ -1,0 +1,196 @@
+---
+sidebar: sidebar 
+permalink: trident-protect/trident-protect-migrate-apps.html 
+keywords: trident, protect, migrate, storage, restore, backup 
+summary: È possibile ripristinare i dati di backup o snapshot in un cluster o in una classe di archiviazione diversi 
+---
+= Migrare le applicazioni utilizzando Trident Protect
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile migrare le applicazioni tra cluster o in classi di archiviazione diverse ripristinando i dati di backup.
+
+
+NOTE: Quando si esegue la migrazione di un'applicazione, tutti gli hook di esecuzione configurati per l'applicazione vengono migrati insieme all'applicazione.  Se è presente un hook di esecuzione post-ripristino, questo viene eseguito automaticamente come parte dell'operazione di ripristino.
+
+
+
+== Operazioni di backup e ripristino
+
+Per eseguire operazioni di backup e ripristino per i seguenti scenari, è possibile automatizzare attività di backup e ripristino specifiche.
+
+
+
+=== Clona nello stesso cluster
+
+Per clonare un'applicazione nello stesso cluster, creare uno snapshot o un backup e ripristinare i dati nello stesso cluster.
+
+.Passi
+. Eseguire una delle seguenti operazioni:
++
+.. link:trident-protect-protect-apps.html#create-an-on-demand-snapshot["Crea uno snapshot"].
+.. link:trident-protect-protect-apps.html#create-an-on-demand-backup["Crea un backup"].
+
+
+. Sullo stesso cluster, esegui una delle seguenti operazioni, a seconda che tu abbia creato uno snapshot o un backup:
++
+.. link:trident-protect-restore-apps.html#restore-from-a-snapshot-to-a-different-namespace["Ripristina i tuoi dati dallo snapshot"].
+.. link:trident-protect-restore-apps.html#restore-from-a-backup-to-a-different-namespace["Ripristina i tuoi dati dal backup"].
+
+
+
+
+
+
+=== Clona in cluster diversi
+
+Per clonare un'applicazione su un cluster diverso (eseguire un clone tra cluster), creare un backup sul cluster di origine, quindi ripristinare il backup su un cluster diverso. Assicurarsi che Trident Protect sia installato sul cluster di destinazione.
+
+
+NOTE: È possibile replicare un'applicazione tra cluster diversi utilizzandolink:trident-protect-use-snapmirror-replication.html["Replica SnapMirror"] .
+
+.Passi
+. link:trident-protect-protect-apps.html#create-an-on-demand-backup["Crea un backup"].
+. Assicurarsi che il CR di AppVault per il bucket di archiviazione degli oggetti che contiene il backup sia stato configurato sul cluster di destinazione.
+. Sul cluster di destinazione,link:trident-protect-restore-apps.html#restore-from-a-backup-to-a-different-namespace["ripristina i tuoi dati dal backup"] .
+
+
+
+
+== Migrare le applicazioni da una classe di archiviazione a un'altra classe di archiviazione
+
+È possibile migrare le applicazioni da una classe di archiviazione a una diversa ripristinando un backup nella classe di archiviazione di destinazione.
+
+Ad esempio (escludendo i segreti dal ripristino CR):
+
+[source, yaml]
+----
+apiVersion: protect.trident.netapp.io/v1
+kind: SnapshotRestore
+metadata:
+  name: "${snapshotRestoreCRName}"
+spec:
+  appArchivePath: "${snapshotArchivePath}"
+  appVaultRef: "${appVaultCRName}"
+  namespaceMapping:
+    - destination: "${destinationNamespace}"
+      source: "${sourceNamespace}"
+  storageClassMapping:
+    - destination: "${destinationStorageClass}"
+      source: "${sourceStorageClass}"
+  resourceFilter:
+    resourceMatchers:
+      kind: Secret
+      version: v1
+    resourceSelectionCriteria: exclude
+----
+[role="tabbed-block"]
+====
+.Ripristinare lo snapshot utilizzando un CR
+--
+.Passi
+. Crea il file di risorse personalizzate (CR) e assegnagli un nome `trident-protect-snapshot-restore-cr.yaml` .
+. Nel file creato, configura i seguenti attributi:
++
+** *metadata.name*: (_Obbligatorio_) Il nome di questa risorsa personalizzata; scegli un nome univoco e sensato per il tuo ambiente.
+** *spec.appArchivePath*: il percorso all'interno di AppVault in cui sono archiviati i contenuti dello snapshot.  Per trovare questo percorso puoi usare il seguente comando:
++
+[source, console]
+----
+kubectl get snapshots <my-snapshot-name> -n trident-protect -o jsonpath='{.status.appArchivePath}'
+----
+** *spec.appVaultRef*: (_Obbligatorio_) Nome dell'AppVault in cui sono archiviati i contenuti dello snapshot.
+** *spec.namespaceMapping*: la mappatura dello spazio dei nomi di origine dell'operazione di ripristino allo spazio dei nomi di destinazione.  Sostituire `my-source-namespace` E `my-destination-namespace` con informazioni provenienti dal tuo ambiente.
++
+[source, yaml]
+----
+---
+apiVersion: protect.trident.netapp.io/v1
+kind: SnapshotRestore
+metadata:
+  name: my-cr-name
+  namespace: trident-protect
+spec:
+  appArchivePath: my-snapshot-path
+  appVaultRef: appvault-name
+  namespaceMapping: [{"source": "my-source-namespace", "destination": "my-destination-namespace"}]
+----
+
+
+. Facoltativamente, se è necessario selezionare solo determinate risorse dell'applicazione da ripristinare, aggiungere un filtro che includa o escluda le risorse contrassegnate con etichette particolari:
++
+** *resourceFilter.resourceSelectionCriteria*: (obbligatorio per il filtraggio) Usa `include or exclude` per includere o escludere una risorsa definita in resourceMatchers.  Aggiungere i seguenti parametri resourceMatchers per definire le risorse da includere o escludere:
++
+*** *resourceFilter.resourceMatchers*: un array di oggetti resourceMatcher.  Se si definiscono più elementi in questo array, essi corrispondono come un'operazione OR e i campi all'interno di ciascun elemento (gruppo, tipo, versione) corrispondono come un'operazione AND.
++
+**** *resourceMatchers[].group*: (_Facoltativo_) Gruppo della risorsa da filtrare.
+**** *resourceMatchers[].kind*: (_Facoltativo_) Tipo di risorsa da filtrare.
+**** *resourceMatchers[].version*: (_Facoltativo_) Versione della risorsa da filtrare.
+**** *resourceMatchers[].names*: (_Facoltativo_) Nomi nel campo metadata.name di Kubernetes della risorsa da filtrare.
+**** *resourceMatchers[].namespaces*: (_Facoltativo_) Spazi dei nomi nel campo metadata.name di Kubernetes della risorsa da filtrare.
+**** *resourceMatchers[].labelSelectors*: (_Facoltativo_) Stringa del selettore di etichetta nel campo metadata.name di Kubernetes della risorsa come definito in https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors["Documentazione di Kubernetes"^] .  Per esempio: `"trident.netapp.io/os=linux"` .
++
+Per esempio:
+
++
+[source, yaml]
+----
+spec:
+  resourceFilter:
+    resourceSelectionCriteria: "include"
+    resourceMatchers:
+      - group: my-resource-group-1
+        kind: my-resource-kind-1
+        version: my-resource-version-1
+        names: ["my-resource-names"]
+        namespaces: ["my-resource-namespaces"]
+        labelSelectors: ["trident.netapp.io/os=linux"]
+      - group: my-resource-group-2
+        kind: my-resource-kind-2
+        version: my-resource-version-2
+        names: ["my-resource-names"]
+        namespaces: ["my-resource-namespaces"]
+        labelSelectors: ["trident.netapp.io/os=linux"]
+----
+
+
+
+
+
+
+. Dopo aver popolato il `trident-protect-snapshot-restore-cr.yaml` file con i valori corretti, applicare CR:
++
+[source, console]
+----
+kubectl apply -f trident-protect-snapshot-restore-cr.yaml
+----
+
+
+--
+.Ripristinare lo snapshot utilizzando la CLI
+--
+.Passi
+. Ripristina lo snapshot in uno spazio dei nomi diverso, sostituendo i valori tra parentesi con le informazioni del tuo ambiente.
++
+** IL `snapshot` l'argomento utilizza uno spazio dei nomi e un nome di snapshot nel formato `<namespace>/<name>` .
+** IL `namespace-mapping` l'argomento utilizza namespace separati da due punti per mappare i namespace di origine ai namespace di destinazione corretti nel formato `source1:dest1,source2:dest2` .
++
+Per esempio:
+
++
+[source, console]
+----
+tridentctl-protect create snapshotrestore <my_restore_name> --snapshot <namespace/snapshot_to_restore> --namespace-mapping <source_to_destination_namespace_mapping>
+----
+
+
+
+
+--
+====

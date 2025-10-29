@@ -1,0 +1,184 @@
+---
+sidebar: sidebar 
+permalink: trident-protect/trident-protect-cli.html 
+keywords: trident, protect, command line utility, cli, netapp, custom, resources 
+summary: È possibile utilizzare il comando protectctl per creare e interagire con le risorse personalizzate Trident Protect. 
+---
+= Installa il plugin Trident Protect CLI
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile utilizzare il plugin della riga di comando Trident Protect, che è un'estensione di Trident `tridentctl` utilità, per creare e interagire con le risorse personalizzate (CR) di protezione Trident .
+
+
+
+== Installa il plugin Trident Protect CLI
+
+Prima di utilizzare l'utilità della riga di comando, è necessario installarla sul computer utilizzato per accedere al cluster.  Seguire questi passaggi, a seconda che il computer utilizzi una CPU x64 o ARM .
+
+[role="tabbed-block"]
+====
+.Scarica il plugin per le CPU Linux AMD64
+--
+.Passi
+. Scarica il plugin Trident Protect CLI:
++
+[source, console]
+----
+curl -L -o tridentctl-protect https://github.com/NetApp/tridentctl-protect/releases/download/25.06.0/tridentctl-protect-linux-amd64
+----
+
+
+--
+.Scarica il plugin per le CPU Linux ARM64
+--
+.Passi
+. Scarica il plugin Trident Protect CLI:
++
+[source, console]
+----
+curl -L -o tridentctl-protect https://github.com/NetApp/tridentctl-protect/releases/download/25.06.0/tridentctl-protect-linux-arm64
+----
+
+
+--
+.Scarica il plugin per le CPU AMD64 di Mac
+--
+.Passi
+. Scarica il plugin Trident Protect CLI:
++
+[source, console]
+----
+curl -L -o tridentctl-protect https://github.com/NetApp/tridentctl-protect/releases/download/25.06.0/tridentctl-protect-macos-amd64
+----
+
+
+--
+.Scarica il plugin per le CPU Mac ARM64
+--
+.Passi
+. Scarica il plugin Trident Protect CLI:
++
+[source, console]
+----
+curl -L -o tridentctl-protect https://github.com/NetApp/tridentctl-protect/releases/download/25.06.0/tridentctl-protect-macos-arm64
+----
+
+
+--
+====
+. Abilita i permessi di esecuzione per il binario del plugin:
++
+[source, console]
+----
+chmod +x tridentctl-protect
+----
+. Copia il file binario del plugin in una posizione definita nella variabile PATH.  Per esempio, `/usr/bin` O `/usr/local/bin` (potrebbero essere necessari privilegi elevati):
++
+[source, console]
+----
+cp ./tridentctl-protect /usr/local/bin/
+----
+. Facoltativamente, puoi copiare il file binario del plugin in una posizione nella tua directory home.  In questo caso, si consiglia di assicurarsi che la posizione faccia parte della variabile PATH:
++
+[source, console]
+----
+cp ./tridentctl-protect ~/bin/
+----
+
+
+
+NOTE: Copiando il plugin in una posizione nella variabile PATH è possibile utilizzare il plugin digitando `tridentctl-protect` O `tridentctl protect` da qualsiasi luogo.
+
+
+
+== Visualizza la guida del plugin Trident CLI
+
+È possibile utilizzare le funzionalità di aiuto integrate nel plugin per ottenere assistenza dettagliata sulle funzionalità del plugin:
+
+.Passi
+. Utilizzare la funzione di aiuto per visualizzare le istruzioni per l'uso:
++
+[source, console]
+----
+tridentctl-protect help
+----
+
+
+
+
+== Abilita il completamento automatico dei comandi
+
+Dopo aver installato il plugin Trident Protect CLI, è possibile abilitare il completamento automatico per determinati comandi.
+
+[role="tabbed-block"]
+====
+.Abilita il completamento automatico per la shell Bash
+--
+.Passi
+. Scarica lo script di completamento:
++
+[source, console]
+----
+curl -L -O https://github.com/NetApp/tridentctl-protect/releases/download/25.06.0/tridentctl-completion.bash
+----
+. Crea una nuova directory nella tua directory home per contenere lo script:
++
+[source, console]
+----
+mkdir -p ~/.bash/completions
+----
+. Sposta lo script scaricato in `~/.bash/completions` elenco:
++
+[source, console]
+----
+mv tridentctl-completion.bash ~/.bash/completions/
+----
+. Aggiungere la seguente riga al `~/.bashrc` file nella tua directory home:
++
+[source, console]
+----
+source ~/.bash/completions/tridentctl-completion.bash
+----
+
+
+--
+.Abilita il completamento automatico per la shell Z
+--
+.Passi
+. Scarica lo script di completamento:
++
+[source, console]
+----
+curl -L -O https://github.com/NetApp/tridentctl-protect/releases/download/25.06.0/tridentctl-completion.zsh
+----
+. Crea una nuova directory nella tua directory home per contenere lo script:
++
+[source, console]
+----
+mkdir -p ~/.zsh/completions
+----
+. Sposta lo script scaricato in `~/.zsh/completions` elenco:
++
+[source, console]
+----
+mv tridentctl-completion.zsh ~/.zsh/completions/
+----
+. Aggiungere la seguente riga al `~/.zprofile` file nella tua directory home:
++
+[source, console]
+----
+source ~/.zsh/completions/tridentctl-completion.zsh
+----
+
+
+--
+====
+.Risultato
+Al successivo accesso alla shell, è possibile utilizzare il completamento automatico dei comandi con il plugin tridentctl-protect.

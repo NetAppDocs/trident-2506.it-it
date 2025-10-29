@@ -1,0 +1,27 @@
+---
+sidebar: sidebar 
+permalink: trident-concepts/provisioning.html 
+keywords: provisioning, Trident 
+summary: Il provisioning in Trident si articola in due fasi principali.  La prima fase associa una classe di archiviazione al set di pool di archiviazione back-end idonei e si verifica come necessaria preparazione prima del provisioning.  La seconda fase comprende la creazione del volume vero e proprio e richiede la scelta di un pool di archiviazione tra quelli associati alla classe di archiviazione del volume in sospeso. 
+---
+= Approvvigionamento
+:hardbreaks:
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Il provisioning in Trident si articola in due fasi principali.  La prima fase associa una classe di archiviazione al set di pool di archiviazione back-end idonei e si verifica come necessaria preparazione prima del provisioning.  La seconda fase comprende la creazione del volume vero e proprio e richiede la scelta di un pool di archiviazione tra quelli associati alla classe di archiviazione del volume in sospeso.
+
+
+
+== Associazione della classe di archiviazione
+
+L'associazione di pool di archiviazione back-end con una classe di archiviazione si basa sia sugli attributi richiesti della classe di archiviazione che sui suoi `storagePools` , `additionalStoragePools` , E `excludeStoragePools` liste.  Quando si crea una classe di archiviazione, Trident confronta gli attributi e i pool offerti da ciascuno dei suoi backend con quelli richiesti dalla classe di archiviazione.  Se gli attributi e il nome di un pool di archiviazione corrispondono a tutti gli attributi e ai nomi dei pool richiesti, Trident aggiunge tale pool di archiviazione al set di pool di archiviazione idonei per quella classe di archiviazione.  Inoltre, Trident aggiunge tutti i pool di archiviazione elencati in `additionalStoragePools` elenco a tale set, anche se i loro attributi non soddisfano tutti o alcuni degli attributi richiesti dalla classe di archiviazione.  Dovresti usare il `excludeStoragePools` elenco per sovrascrivere e rimuovere i pool di archiviazione dall'uso per una classe di archiviazione.  Trident esegue un processo simile ogni volta che si aggiunge un nuovo backend, verificando se i suoi pool di archiviazione soddisfano quelli delle classi di archiviazione esistenti e rimuovendo quelli contrassegnati come esclusi.
+
+
+
+== Creazione del volume
+
+Trident utilizza quindi le associazioni tra classi di archiviazione e pool di archiviazione per determinare dove effettuare il provisioning dei volumi.  Quando si crea un volume, Trident ottiene innanzitutto il set di pool di archiviazione per la classe di archiviazione di quel volume e, se si specifica un protocollo per il volume, Trident rimuove i pool di archiviazione che non possono fornire il protocollo richiesto (ad esempio, un backend NetApp HCI/ SolidFire non può fornire un volume basato su file mentre un backend ONTAP NAS non può fornire un volume basato su blocchi).  Trident randomizza l'ordine di questo set risultante, per facilitare una distribuzione uniforme dei volumi, e quindi lo esegue iterativamente, tentando di effettuare il provisioning del volume su ciascun pool di archiviazione a turno.  Se riesce in una delle due, ritorna correttamente, registrando tutti gli errori riscontrati nel processo.  Trident restituisce un errore *solo* se non riesce a eseguire il provisioning su *tutti* i pool di archiviazione disponibili per la classe di archiviazione e il protocollo richiesti.

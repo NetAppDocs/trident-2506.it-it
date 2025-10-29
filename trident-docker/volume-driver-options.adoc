@@ -1,0 +1,237 @@
+---
+sidebar: sidebar 
+permalink: trident-docker/volume-driver-options.html 
+keywords: create volumes, Trident, trident for docker, docker, docker volume, driver options, ontap, element volumes, cvs, cloud volumes service on gcp, azure netapp files 
+summary: Ogni driver di archiviazione ha un diverso set di opzioni, che è possibile specificare al momento della creazione del volume per personalizzare il risultato.  Di seguito sono riportate le opzioni applicabili al sistema di archiviazione configurato. 
+---
+= Opzioni di volume specifiche del driver
+:hardbreaks:
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Ogni driver di archiviazione ha un diverso set di opzioni, che è possibile specificare al momento della creazione del volume per personalizzare il risultato.  Di seguito sono riportate le opzioni applicabili al sistema di archiviazione configurato.
+
+Utilizzare queste opzioni durante l'operazione di creazione del volume è semplice.  Fornire l'opzione e il valore utilizzando il `-o` operatore durante l'operazione CLI.  Questi sovrascrivono tutti i valori equivalenti presenti nel file di configurazione JSON.
+
+
+
+== Opzioni del volume ONTAP
+
+Le opzioni di creazione del volume per NFS, iSCSI e FC includono quanto segue:
+
+[cols="2*"]
+|===
+| Opzione | Descrizione 
+
+
+| `size`  a| 
+La dimensione del volume è predefinita e pari a 1 GiB.
+
+
+
+| `spaceReserve`  a| 
+Sottile o spesso determinano il volume, l'impostazione predefinita è sottile.  I valori validi sono `none` (sottile provisioning) e `volume` (spessore fornito).
+
+
+
+| `snapshotPolicy`  a| 
+In questo modo la policy snapshot verrà impostata sul valore desiderato.  L'impostazione predefinita è `none` , il che significa che non verranno creati automaticamente snapshot per il volume.  A meno che non venga modificato dall'amministratore dell'archiviazione, su tutti i sistemi ONTAP esiste una policy denominata "default" che crea e conserva sei snapshot orari, due giornalieri e due settimanali.  I dati conservati in uno snapshot possono essere recuperati navigando verso `.snapshot` directory in qualsiasi directory del volume.
+
+
+
+| `snapshotReserve`  a| 
+In questo modo la riserva di snapshot verrà impostata sulla percentuale desiderata.  L'impostazione predefinita è nessun valore, il che significa che ONTAP selezionerà snapshotReserve (in genere 5%) se è stata selezionata una snapshotPolicy oppure 0% se la snapshotPolicy è nessuna.  È possibile impostare il valore snapshotReserve predefinito nel file di configurazione per tutti i backend ONTAP e utilizzarlo come opzione di creazione del volume per tutti i backend ONTAP, ad eccezione di ontap-nas-economy.
+
+
+
+| `splitOnClone`  a| 
+Quando si clona un volume, ONTAP divide immediatamente il clone dal suo elemento padre.  L'impostazione predefinita è `false` .  In alcuni casi d'uso per la clonazione dei volumi, il modo migliore è separare il clone dal suo elemento padre immediatamente dopo la creazione, perché è improbabile che vi siano opportunità di efficienza di archiviazione.  Ad esempio, la clonazione di un database vuoto può comportare un notevole risparmio di tempo, ma poco di spazio di archiviazione, quindi è meglio dividere immediatamente la clonazione.
+
+
+
+| `encryption`  a| 
+Abilita NetApp Volume Encryption (NVE) sul nuovo volume; l'impostazione predefinita è `false` .  Per utilizzare questa opzione, NVE deve essere concesso in licenza e abilitato sul cluster.
+
+Se NAE è abilitato sul backend, qualsiasi volume fornito in Trident sarà abilitato per NAE.
+
+Per maggiori informazioni, fare riferimento a:link:../trident-reco/security-reco.html["Come funziona Trident con NVE e NAE"] .
+
+
+
+| `tieringPolicy`  a| 
+Imposta la politica di suddivisione in livelli da utilizzare per il volume.  In questo modo si decide se i dati vengono spostati nel livello cloud quando diventano inattivi (freddi).
+
+|===
+Le seguenti opzioni aggiuntive sono *solo* per NFS:
+
+[cols="2*"]
+|===
+| Opzione | Descrizione 
+
+
+| `unixPermissions`  a| 
+Controlla il set di autorizzazioni per il volume stesso.  Per impostazione predefinita, le autorizzazioni saranno impostate su ``---rwxr-xr-x` , o in notazione numerica 0755, e `root` sarà il proprietario.  Funzionerà sia il formato testo che quello numerico.
+
+
+
+| `snapshotDir`  a| 
+Impostando questo su `true` farà il `.snapshot` directory visibile ai client che accedono al volume.  Il valore predefinito è `false` , il che significa che la visibilità del `.snapshot` la directory è disabilitata per impostazione predefinita.  Alcune immagini, ad esempio l'immagine ufficiale di MySQL, non funzionano come previsto quando `.snapshot` la directory è visibile.
+
+
+
+| `exportPolicy`  a| 
+Imposta la politica di esportazione da utilizzare per il volume.  L'impostazione predefinita è `default` .
+
+
+
+| `securityStyle`  a| 
+Imposta lo stile di sicurezza da utilizzare per l'accesso al volume.  L'impostazione predefinita è `unix` .  I valori validi sono `unix` E `mixed` .
+
+|===
+Le seguenti opzioni aggiuntive sono *solo* per iSCSI:
+
+[cols="2*"]
+|===
+| Opzione | Descrizione 
+
+
+| `fileSystemType` | Imposta il file system utilizzato per formattare i volumi iSCSI.  L'impostazione predefinita è `ext4` .  I valori validi sono `ext3` , `ext4` , E `xfs` . 
+
+
+| `spaceAllocation` | Impostando questo su `false` disattiverà la funzione di allocazione dello spazio della LUN.  Il valore predefinito è `true` , ovvero ONTAP avvisa l'host quando il volume ha esaurito lo spazio e la LUN nel volume non può accettare scritture.  Questa opzione consente inoltre a ONTAP di recuperare spazio automaticamente quando l'host elimina i dati. 
+|===
+
+
+=== Esempi
+
+Vedi gli esempi qui sotto:
+
+* Crea un volume da 10 GiB:
++
+[listing]
+----
+docker volume create -d netapp --name demo -o size=10G -o encryption=true
+----
+* Crea un volume da 100 GiB con snapshot:
++
+[listing]
+----
+docker volume create -d netapp --name demo -o size=100G -o snapshotPolicy=default -o snapshotReserve=10
+----
+* Creare un volume con il bit setUID abilitato:
++
+[listing]
+----
+docker volume create -d netapp --name demo -o unixPermissions=4755
+----
+
+
+La dimensione minima del volume è 20 MiB.
+
+Se la riserva snapshot non è specificata e la policy snapshot è `none` , Trident utilizza una riserva snapshot dello 0%.
+
+* Crea un volume senza policy snapshot e senza riserva snapshot:
++
+[listing]
+----
+docker volume create -d netapp --name my_vol --opt snapshotPolicy=none
+----
+* Crea un volume senza policy di snapshot e con una riserva di snapshot personalizzata del 10%:
++
+[listing]
+----
+docker volume create -d netapp --name my_vol --opt snapshotPolicy=none --opt snapshotReserve=10
+----
+* Crea un volume con un criterio snapshot e una riserva snapshot personalizzata del 10%:
++
+[listing]
+----
+docker volume create -d netapp --name my_vol --opt snapshotPolicy=myPolicy --opt snapshotReserve=10
+----
+* Creare un volume con una policy di snapshot e accettare la riserva di snapshot predefinita dell'ONTAP (in genere il 5%):
++
+[listing]
+----
+docker volume create -d netapp --name my_vol --opt snapshotPolicy=myPolicy
+----
+
+
+
+
+== Opzioni del volume del software Element
+
+Le opzioni del software Element espongono le policy relative alle dimensioni e alla qualità del servizio (QoS) associate al volume.  Quando il volume viene creato, la politica QoS ad esso associata viene specificata utilizzando `-o type=service_level` nomenclatura.
+
+Il primo passo per definire un livello di servizio QoS con il driver Element è creare almeno un tipo e specificare gli IOPS minimi, massimi e burst associati a un nome nel file di configurazione.
+
+Altre opzioni di creazione del volume del software Element includono quanto segue:
+
+[cols="2*"]
+|===
+| Opzione | Descrizione 
+
+
+| `size`  a| 
+La dimensione del volume, predefinita è 1 GiB o voce di configurazione ... "defaults": {"size": "5G"}.
+
+
+
+| `blocksize`  a| 
+Utilizzare 512 o 4096, il valore predefinito è 512 o la voce di configurazione DefaultBlockSize.
+
+|===
+
+
+=== Esempio
+
+Vedere il seguente file di configurazione di esempio con le definizioni QoS:
+
+[source, json]
+----
+{
+  "Types": [
+    {
+      "Type": "Bronze",
+      "Qos": {
+        "minIOPS": 1000,
+        "maxIOPS": 2000,
+        "burstIOPS": 4000
+      }
+    },
+    {
+      "Type": "Silver",
+      "Qos": {
+        "minIOPS": 4000,
+        "maxIOPS": 6000,
+        "burstIOPS": 8000
+      }
+    },
+    {
+      "Type": "Gold",
+      "Qos": {
+        "minIOPS": 6000,
+        "maxIOPS": 8000,
+        "burstIOPS": 10000
+      }
+    }
+  ]
+}
+----
+Nella configurazione soprastante, abbiamo tre definizioni di policy: Bronzo, Argento e Oro.  Questi nomi sono arbitrari.
+
+* Crea un volume Gold da 10 GiB:
++
+[listing]
+----
+docker volume create -d solidfire --name sfGold -o type=Gold -o size=10G
+----
+* Crea un volume Bronze da 100 GiB:
++
+[listing]
+----
+docker volume create -d solidfire --name sfBronze -o type=Bronze -o size=100G
+----
+

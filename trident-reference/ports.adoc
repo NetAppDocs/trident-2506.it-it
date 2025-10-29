@@ -1,0 +1,40 @@
+---
+sidebar: sidebar 
+permalink: trident-reference/ports.html 
+keywords: Trident, port, ports 
+summary: Scopri di più sulle porte attraverso cui Trident comunica. 
+---
+= Porte Trident
+:hardbreaks:
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Scopri di più sulle porte utilizzate Trident per le comunicazioni.
+
+
+
+== Porte Trident
+
+Trident utilizza le seguenti porte per la comunicazione all'interno di Kubernetes:
+
+[cols="2,4"]
+|===
+| Porta | Scopo 
+
+
+| 8443 | Backchannel HTTPS 
+
+
+| 8001 | Endpoint delle metriche di Prometheus 
+
+
+| 8000 | Server REST Trident 
+
+
+| 17546 | Porta di sonda di attività/prontezza utilizzata dai pod del daemonset Trident 
+|===
+
+NOTE: La porta della sonda di attività/prontezza può essere modificata durante l'installazione utilizzando `--probe-port` bandiera.  È importante assicurarsi che questa porta non sia utilizzata da un altro processo sui nodi worker.
