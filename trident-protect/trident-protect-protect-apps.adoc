@@ -347,13 +347,13 @@ kubectl get backup -n <namespace_name> <my_backup_cr_name> -o jsonpath='{.status
 
 == Abilita backup e ripristino per le operazioni azure-netapp-files (ANF)
 
-Se hai installato Trident Protect, puoi abilitare la funzionalità di backup e ripristino a basso consumo di spazio per i backend di archiviazione che utilizzano la classe di archiviazione azure-netapp-files e sono stati creati prima di Trident 24.06.  Questa funzionalità funziona con volumi NFSv4 e non consuma spazio aggiuntivo dal pool di capacità.
+Se hai installato Trident Protect, puoi abilitare la funzionalità di backup e ripristino a basso consumo di spazio per i backend di archiviazione che utilizzano la classe di archiviazione azure-netapp-files e sono stati creati prima di Trident 24.06. Questa funzionalità funziona con volumi NFSv4 e non consuma spazio aggiuntivo dal pool di capacità.
 
 .Prima di iniziare
 Assicurarsi che:
 
 * Hai installato Trident Protect.
-* Hai definito un'applicazione in Trident Protect.  Questa applicazione avrà funzionalità di protezione limitate finché non avrai completato questa procedura.
+* Hai definito un'applicazione in Trident Protect. Questa applicazione avrà funzionalità di protezione limitate finché non avrai completato questa procedura.
 * Hai `azure-netapp-files` selezionata come classe di archiviazione predefinita per il backend di archiviazione.
 
 
@@ -383,13 +383,13 @@ Risposta:
 snapshotDirectory: "true"
 ----
 +
-Quando la directory degli snapshot non è abilitata, Trident Protect sceglie la funzionalità di backup normale, che consuma temporaneamente spazio nel pool di capacità durante il processo di backup.  In questo caso, assicurarsi che nel pool di capacità sia disponibile spazio sufficiente per creare un volume temporaneo delle dimensioni del volume sottoposto a backup.
+Quando la directory snapshot non è abilitata, sceglie la funzionalità di backup normale, che consuma temporaneamente spazio nel pool di capacità durante il processo di backup. In questo caso, assicurarsi che nel pool di capacità sia disponibile spazio sufficiente per creare un volume temporaneo delle dimensioni del volume sottoposto a backup.
 
 
 
 
 
 .Risultato
-L'applicazione è pronta per il backup e il ripristino tramite Trident Protect.  Ogni PVC può essere utilizzato anche da altre applicazioni per backup e ripristini.
+L'applicazione è pronta per il backup e il ripristino tramite Trident Protect. Ogni PVC può essere utilizzato anche da altre applicazioni per backup e ripristini.
 
 ====

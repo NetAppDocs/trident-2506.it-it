@@ -14,7 +14,7 @@ summary: È possibile utilizzare il comando protectctl per creare e interagire c
 
 
 [role="lead"]
-È possibile utilizzare il plugin della riga di comando Trident Protect, che è un'estensione di Trident `tridentctl` utilità, per creare e interagire con le risorse personalizzate (CR) di protezione Trident .
+È possibile utilizzare il plugin della riga di comando Trident Protect, che è un'estensione di Trident `tridentctl` utilità, per creare e interagire con le risorse personalizzate (CR) Trident Protect.
 
 
 

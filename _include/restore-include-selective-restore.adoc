@@ -5,7 +5,7 @@
 . (_Facoltativo_) Se è necessario selezionare solo determinate risorse dell'applicazione da ripristinare, aggiungere un filtro che includa o escluda le risorse contrassegnate con etichette particolari:
 +
 
-NOTE: Trident Protect seleziona automaticamente alcune risorse in base alla loro relazione con le risorse selezionate.  Ad esempio, se selezioni una risorsa di richiesta di volume persistente e a questa è associato un pod, Trident Protect ripristinerà anche il pod associato.
+NOTE: Trident Protect seleziona automaticamente alcune risorse in base alla loro relazione con le risorse selezionate. Ad esempio, se selezioni una risorsa di richiesta di volume persistente e a questa è associato un pod, Trident Protect ripristinerà anche il pod associato.
 
 +
 ** *resourceFilter.resourceSelectionCriteria*: (Obbligatorio per il filtraggio) Utilizzare `Include` O `Exclude` per includere o escludere una risorsa definita in resourceMatchers.  Aggiungere i seguenti parametri resourceMatchers per definire le risorse da includere o escludere:

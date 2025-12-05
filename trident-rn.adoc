@@ -137,7 +137,7 @@ NOTE: Questa funzionalità è sperimentale e attualmente supporta flussi di lavo
 
 
 
-=== Trident protetto
+=== Trident Protect
 
 NetApp Trident Protect offre funzionalità avanzate di gestione dei dati delle applicazioni che migliorano la funzionalità e la disponibilità delle applicazioni Kubernetes con stato supportate dai sistemi di storage NetApp ONTAP e dal provisioner di storage NetApp Trident CSI.
 
@@ -243,7 +243,7 @@ A partire da Trident 25.02, il riepilogo delle novità fornisce dettagli su migl
 
 
 
-=== Trident protetto
+=== Trident Protect
 
 NetApp Trident Protect offre funzionalità avanzate di gestione dei dati delle applicazioni che migliorano la funzionalità e la disponibilità delle applicazioni Kubernetes con stato supportate dai sistemi di storage NetApp ONTAP e dal provisioner di storage NetApp Trident CSI.
 
@@ -251,12 +251,12 @@ NetApp Trident Protect offre funzionalità avanzate di gestione dei dati delle a
 
 ==== Miglioramenti
 
-* Aggiunto supporto per backup e ripristino per VM di virtualizzazione KubeVirt/OpenShift per l'archiviazione volumeMode: File e volumeMode: Block (dispositivo raw).  Questo supporto è compatibile con tutti i driver Trident e migliora le funzionalità di protezione esistenti durante la replica dello storage utilizzando NetApp SnapMirror con Trident Protect.
+* Aggiunto supporto per backup e ripristino per VM di virtualizzazione KubeVirt/OpenShift per l'archiviazione volumeMode: File e volumeMode: Block (dispositivo raw). Questo supporto è compatibile con tutti i driver Trident e migliora le funzionalità di protezione esistenti durante la replica dello storage tramite NetApp SnapMirror con Trident Protect.
 * Aggiunta la possibilità di controllare il comportamento di blocco a livello di applicazione per gli ambienti Kubevirt.
 * Aggiunto supporto per la configurazione delle connessioni proxy AutoSupport .
 * Aggiunta la possibilità di definire un segreto per la crittografia del data mover (Kopia / Restic).
 * Aggiunta la possibilità di eseguire manualmente un hook di esecuzione.
-* Aggiunta la possibilità di configurare i vincoli del contesto di sicurezza (SCC) durante l'installazione Trident Protect.
+* Aggiunta la possibilità di configurare vincoli di contesto di sicurezza (SCC) durante l'installazione Trident Protect.
 * Aggiunto supporto per la configurazione di nodeSelector durante l'installazione Trident Protect.
 * Aggiunto supporto per proxy di uscita HTTP/HTTPS per oggetti AppVault.
 * ResourceFilter esteso per consentire l'esclusione delle risorse con ambito cluster.

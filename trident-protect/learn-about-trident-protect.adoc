@@ -21,5 +21,5 @@ NetApp Trident Protect offre funzionalità avanzate di gestione dei dati delle a
 
 Puoi informarti sui requisiti Trident Protect prima di installarlo:
 
-* link:trident-protect-requirements.html["Requisiti di protezione Trident"]
+* link:trident-protect-requirements.html["Requisiti Trident Protect"]
 

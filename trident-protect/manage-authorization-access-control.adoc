@@ -2,9 +2,9 @@
 permalink: trident-protect/manage-authorization-access-control.html 
 sidebar: sidebar 
 keywords: manage, authentication, rbac 
-summary: 'Trident Protect utilizza il modello Kubernetes di controllo degli accessi basato sui ruoli (RBAC). È possibile utilizzare le funzionalità di protezione RBAC Trident per controllare in modo più preciso l"accesso alle risorse.' 
+summary: 'Trident Protect utilizza il modello Kubernetes di controllo degli accessi basato sui ruoli (RBAC). È possibile utilizzare le funzionalità RBAC Trident Protect per controllare in modo più preciso l"accesso alle risorse.' 
 ---
-= Gestisci l'autorizzazione di protezione e il controllo degli accessi Trident
+= Gestisci l'autorizzazione e il controllo degli accessi Trident Protect
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
@@ -19,7 +19,7 @@ Si noti che nessun utente può creare CR di gestione dei dati delle applicazioni
 
 [NOTE]
 ====
-Solo gli amministratori dovrebbero avere accesso agli oggetti di risorse personalizzati protetti Trident privilegiati, tra cui:
+Solo gli amministratori dovrebbero avere accesso agli oggetti di risorse personalizzate Trident Protect privilegiati, tra cui:
 
 * *AppVault*: richiede i dati delle credenziali del bucket
 * *AutoSupportBundle*: raccoglie metriche, registri e altri dati sensibili Trident Protect
@@ -128,7 +128,7 @@ type: kubernetes.io/service-account-token
 
 === Passaggio 4: creare un oggetto RoleBinding per associare l'oggetto ClusterRole a ciascun nuovo account di servizio
 
-Quando si installa Trident Protect, viene creato un oggetto ClusterRole predefinito.  È possibile associare questo ClusterRole all'account di servizio creando e applicando un oggetto RoleBinding.
+Quando si installa Trident Protect, viene creato un oggetto ClusterRole predefinito. È possibile associare questo ClusterRole all'account di servizio creando e applicando un oggetto RoleBinding.
 
 .Passi
 . Associare ClusterRole all'account del servizio di ingegneria:
@@ -215,7 +215,7 @@ apiVersion: protect.trident.netapp.io/v1
 kind: AppVault
 metadata:
   name: appvault-for-eng-user-only
-  namespace: trident-protect # Trident protect system namespace
+  namespace: trident-protect # Trident Protect system namespace
 spec:
   providerConfig:
     azure:

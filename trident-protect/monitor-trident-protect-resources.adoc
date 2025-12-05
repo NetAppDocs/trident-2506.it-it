@@ -2,9 +2,9 @@
 permalink: trident-protect/monitor-trident-protect-resources.html 
 sidebar: sidebar 
 keywords: manage, authentication, rbac 
-summary: È possibile monitorare lo stato delle risorse di protezione Trident utilizzando kube-state-metrics e Prometheus.  In questo modo vengono fornite informazioni sullo stato di implementazione, sui nodi e sui pod. 
+summary: È possibile monitorare lo stato delle risorse Trident Protect utilizzando kube-state-metrics e Prometheus. In questo modo vengono fornite informazioni sullo stato di implementazione, sui nodi e sui pod. 
 ---
-= Monitora le risorse di protezione Trident
+= Monitorare le risorse Trident Protect
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
@@ -13,9 +13,9 @@ summary: È possibile monitorare lo stato delle risorse di protezione Trident ut
 [role="lead"]
 È possibile utilizzare gli strumenti open source kube-state-metrics, Prometheus e Alertmanager per monitorare lo stato di integrità delle risorse protette da Trident Protect.
 
-Il servizio kube-state-metrics genera metriche dalla comunicazione API di Kubernetes.  Utilizzandolo con Trident Protect, puoi ottenere informazioni utili sullo stato delle risorse nel tuo ambiente.
+Il servizio kube-state-metrics genera metriche dalla comunicazione API di Kubernetes. Utilizzandolo con Trident Protect, puoi ottenere informazioni utili sullo stato delle risorse nel tuo ambiente.
 
-Prometheus è un toolkit in grado di acquisire i dati generati da kube-state-metrics e presentarli come informazioni facilmente leggibili su questi oggetti.  Insieme, kube-state-metrics e Prometheus ti consentono di monitorare lo stato e l'integrità delle risorse che gestisci con Trident Protect.
+Prometheus è un toolkit in grado di acquisire i dati generati da kube-state-metrics e presentarli come informazioni facilmente leggibili su questi oggetti. Insieme, kube-state-metrics e Prometheus ti consentono di monitorare lo stato e l'integrità delle risorse che gestisci con Trident Protect.
 
 Alertmanager è un servizio che acquisisce gli avvisi inviati da strumenti come Prometheus e li indirizza verso destinazioni configurate dall'utente.
 

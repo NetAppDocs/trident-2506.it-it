@@ -1,10 +1,10 @@
 ---
 sidebar: sidebar 
 permalink: blog-posts.html 
-keywords: Trident blogs, Trident protect blogs 
+keywords: Trident blogs, Trident Protect blogs 
 summary: Puoi trovare degli ottimi blog NetApp Trident e Trident Protect. 
 ---
-= Trident e Trident proteggono i blog
+= Blog Trident e Trident Protect
 :hardbreaks:
 :allow-uri-read: 
 :icons: font
@@ -39,12 +39,12 @@ Puoi trovare alcuni ottimi blog NetApp Trident e Trident Protect qui:
 
 
 
-== Trident protegge i blog
+== Blog Trident Protect
 
-* 16 maggio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Automating-registry-failover-for-disaster-recovery-with-Trident-protect-post/ba-p/460777["Automazione del failover del registro per il ripristino di emergenza con i ganci post-ripristino Trident Protect"^]
+* 16 maggio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Automating-registry-failover-for-disaster-recovery-with-Trident-protect-post/ba-p/460777["Automazione del failover del registro per il ripristino di emergenza con hook post-ripristino Trident Protect"^]
 * 16 maggio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/OpenShift-Virtualization-Disaster-Recovery-with-NetApp-Trident-Protect/ba-p/460716["Ripristino di emergenza della virtualizzazione OpenShift con NetApp Trident Protect"^]
-* 13 maggio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Storage-class-migration-with-Trident-protect-backup-amp-restore/ba-p/460637["Migrazione della classe di archiviazione con Trident Protect Backup  Restore"^]
-* 9 maggio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Rescale-Kubernetes-applications-with-Trident-protect-post-restore-hooks/ba-p/460514["Ridimensiona le applicazioni Kubernetes con i ganci di protezione post-ripristino Trident"^]
+* 13 maggio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Storage-class-migration-with-Trident-protect-backup-amp-restore/ba-p/460637["Migrazione della classe di archiviazione con backup e ripristino Trident Protect"^]
+* 9 maggio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Rescale-Kubernetes-applications-with-Trident-protect-post-restore-hooks/ba-p/460514["Ridimensiona le applicazioni Kubernetes con gli hook post-ripristino Trident Protect"^]
 * 3 aprile 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Trident-Protect-Power-Up-Kubernetes-Replication-for-Protection-amp-Disaster/ba-p/459777["Trident Protect Power Up: replica di Kubernetes per protezione e ripristino di emergenza"^]
 * 13 marzo 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Crash-Consistent-Backup-and-Restore-Operations-for-OpenShift-Virtualization-VMs/ba-p/459417["Operazioni di backup e ripristino coerenti con gli arresti anomali per le VM di virtualizzazione OpenShift"^]
 * 11 marzo 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Extending-GitOps-patterns-to-application-data-protection-with-NetApp-Trident/ba-p/459323["Estensione dei modelli GitOps alla protezione dei dati delle applicazioni con NetApp Trident"^]

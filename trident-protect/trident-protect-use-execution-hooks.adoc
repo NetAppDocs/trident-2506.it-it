@@ -2,9 +2,9 @@
 sidebar: sidebar 
 permalink: trident-protect/trident-protect-use-execution-hooks.html 
 keywords: trident, protect, execution hooks 
-summary: 'È possibile creare un hook di esecuzione personalizzato per un"app utilizzando Trident Protect.  Per creare hook di esecuzione è necessario disporre delle autorizzazioni di Proprietario, Amministratore o Membro.' 
+summary: 'È possibile creare un hook di esecuzione personalizzato per un"app utilizzando Trident Protect. Per creare hook di esecuzione è necessario disporre delle autorizzazioni di Proprietario, Amministratore o Membro.' 
 ---
-= Gestisci i ganci di esecuzione Trident Protect
+= Gestire gli hook di esecuzione Trident Protect
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -81,7 +81,7 @@ NOTE: Poiché gli hook di esecuzione spesso riducono o disabilitano completament
 
 Quando aggiungi o modifichi un hook di esecuzione per un'applicazione, puoi aggiungere filtri all'hook di esecuzione per gestire i contenitori a cui l'hook corrisponderà. I filtri sono utili per le applicazioni che utilizzano la stessa immagine contenitore su tutti i contenitori, ma potrebbero utilizzare ciascuna immagine per uno scopo diverso (ad esempio Elasticsearch). I filtri consentono di creare scenari in cui gli hook di esecuzione vengono eseguiti su alcuni contenitori identici, ma non necessariamente su tutti. Se si creano più filtri per un singolo hook di esecuzione, questi vengono combinati con un operatore logico AND. È possibile avere fino a 10 filtri attivi per ogni hook di esecuzione.
 
-Ogni filtro aggiunto a un hook di esecuzione utilizza un'espressione regolare per abbinare i contenitori nel cluster. Quando un hook corrisponde a un contenitore, eseguirà lo script associato su quel contenitore. Le espressioni regolari per i filtri utilizzano la sintassi Regular Expression 2 (RE2), che non supporta la creazione di un filtro che escluda i contenitori dall'elenco delle corrispondenze. Per informazioni sulla sintassi supportata Trident Protect per le espressioni regolari nei filtri di hook di esecuzione, vedere https://github.com/google/re2/wiki/Syntax["Supporto della sintassi Regular Expression 2 (RE2)"^] .
+Ogni filtro aggiunto a un hook di esecuzione utilizza un'espressione regolare per abbinare i contenitori nel cluster. Quando un hook corrisponde a un contenitore, eseguirà lo script associato su quel contenitore. Le espressioni regolari per i filtri utilizzano la sintassi Regular Expression 2 (RE2), che non supporta la creazione di un filtro che escluda i contenitori dall'elenco delle corrispondenze. Per informazioni sulla sintassi supportata da Trident Protect per le espressioni regolari nei filtri di hook di esecuzione, vedere https://github.com/google/re2/wiki/Syntax["Supporto della sintassi Regular Expression 2 (RE2)"^] .
 
 
 NOTE: Se si aggiunge un filtro namespace a un hook di esecuzione eseguito dopo un'operazione di ripristino o clonazione e l'origine e la destinazione del ripristino o della clonazione si trovano in namespace diversi, il filtro namespace viene applicato solo al namespace di destinazione.
@@ -96,7 +96,7 @@ Visita il https://github.com/NetApp/Verda["Progetto GitHub NetApp Verda"] per sc
 
 == Creare un hook di esecuzione
 
-È possibile creare un hook di esecuzione personalizzato per un'app utilizzando Trident Protect.  Per creare hook di esecuzione è necessario disporre delle autorizzazioni di Proprietario, Amministratore o Membro.
+È possibile creare un hook di esecuzione personalizzato per un'app utilizzando . Per creare hook di esecuzione è necessario disporre delle autorizzazioni di Proprietario, Amministratore o Membro.
 
 [role="tabbed-block"]
 ====
@@ -104,7 +104,7 @@ Visita il https://github.com/NetApp/Verda["Progetto GitHub NetApp Verda"] per sc
 --
 .Passi
 . Crea il file di risorse personalizzate (CR) e assegnagli un nome `trident-protect-hook.yaml` .
-. Configurare i seguenti attributi in modo che corrispondano all'ambiente di protezione Trident e alla configurazione del cluster:
+. Configurare i seguenti attributi in modo che corrispondano all'ambiente Trident Protect e alla configurazione del cluster:
 +
 ** *metadata.name*: (_Obbligatorio_) Il nome di questa risorsa personalizzata; scegli un nome univoco e sensato per il tuo ambiente.
 ** *spec.applicationRef*: (_Obbligatorio_) Nome Kubernetes dell'applicazione per cui eseguire l'hook di esecuzione.
@@ -221,7 +221,7 @@ L'esecuzione manuale di un hook di esecuzione consiste in due passaggi fondament
 --
 .Passi
 . Crea il file di risorse personalizzate (CR) e assegnagli un nome `trident-protect-resource-backup.yaml` .
-. Configurare i seguenti attributi in modo che corrispondano all'ambiente di protezione Trident e alla configurazione del cluster:
+. Configurare i seguenti attributi in modo che corrispondano all'ambiente Trident Protect e alla configurazione del cluster:
 +
 ** *metadata.name*: (_Obbligatorio_) Il nome di questa risorsa personalizzata; scegli un nome univoco e sensato per il tuo ambiente.
 ** *spec.applicationRef*: (_Obbligatorio_) Nome Kubernetes dell'applicazione per cui creare il backup delle risorse.
@@ -294,7 +294,7 @@ kubectl describe resourcebackup <my_backup_name>
 --
 .Passi
 . Crea il file di risorse personalizzate (CR) e assegnagli un nome `trident-protect-hook-run.yaml` .
-. Configurare i seguenti attributi in modo che corrispondano all'ambiente di protezione Trident e alla configurazione del cluster:
+. Configurare i seguenti attributi in modo che corrispondano all'ambiente Trident Protect e alla configurazione del cluster:
 +
 ** *metadata.name*: (_Obbligatorio_) Il nome di questa risorsa personalizzata; scegli un nome univoco e sensato per il tuo ambiente.
 ** *spec.applicationRef*: (_Obbligatorio_) Assicurati che questo valore corrisponda al nome dell'applicazione dal CR ResourceBackup creato nel passaggio 1.
