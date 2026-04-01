@@ -42,8 +42,6 @@ sidebar:
     entries:
     - title: Cosa c'è di nuovo
       url: "/trident-rn.html"
-    - title: Versioni precedenti
-      url: "/earlier-versions.html"
     - title: Problemi noti
       url: "/known-issues.html"
   - section: trident-get-started
