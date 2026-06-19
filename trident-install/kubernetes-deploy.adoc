@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: trident-get-started/kubernetes-deploy.html 
+permalink: trident-install/kubernetes-deploy.html 
 keywords: deploy, Trident, methods, operator, tridentctl, helm, tanzu, vmware 
 summary: 'È possibile installare Trident utilizzando l"operatore Trident (manualmente o tramite Helm) oppure con `tridentctl` .  Questo argomento fornisce informazioni importanti per selezionare il processo di installazione più adatto alle tue esigenze.' 
 ---
@@ -40,7 +40,7 @@ Utilizzo di una configurazione non multipathing o utilizzo di `find_multipaths: 
 
 Indipendentemente dal percorso di installazione, è necessario disporre di:
 
-* Privilegi completi per un cluster Kubernetes supportato che esegue una versione supportata di Kubernetes e requisiti delle funzionalità abilitati.  Rivedere illink:requirements.html["requisiti"] per i dettagli.
+* Privilegi completi per un cluster Kubernetes supportato che esegue una versione supportata di Kubernetes e con i requisiti delle funzionalità abilitati. Consultare link:../trident-get-started/requirements.html["requisiti"] per i dettagli.
 * Accesso a un sistema di archiviazione NetApp supportato.
 * Capacità di montare volumi da tutti i nodi worker di Kubernetes.
 * Un host Linux con `kubectl` (O `oc` , se si utilizza OpenShift) installato e configurato per gestire il cluster Kubernetes che si desidera utilizzare.
@@ -56,13 +56,13 @@ TIP: Se non hai familiarità conlink:../trident-get-started/intro.html["concetti
 
 == Scegli il tuo metodo di installazione
 
-Seleziona il metodo di installazione più adatto a te.  Dovresti anche rivedere le considerazioni perlink:kubernetes-deploy.html#move-between-installation-methods["spostarsi tra i metodi"] prima di prendere una decisione.
+Seleziona il metodo di installazione più adatto alle tue esigenze. Dovresti anche esaminare le considerazioni per link:../trident-install/kubernetes-deploy.html#moving-between-installation-methods["spostarsi tra i metodi"] prima di prendere una decisione.
 
 
 
 === Utilizzo dell'operatore Trident
 
-Che si tratti di una distribuzione manuale o tramite Helm, l'operatore Trident è un ottimo modo per semplificare l'installazione e gestire dinamicamente le risorse Trident .  Puoi anchelink:../trident-get-started/kubernetes-customize-deploy.html["personalizza la distribuzione del tuo operatore Trident"] utilizzando gli attributi nel `TridentOrchestrator` risorsa personalizzata (CR).
+Che si utilizzi la distribuzione manuale o Helm, l'operatore Trident è un ottimo modo per semplificare l'installazione e gestire dinamicamente le risorse Trident. Puoi anche link:../trident-install/kubernetes-customize-deploy.html["personalizza la distribuzione del tuo operatore Trident"] utilizzando gli attributi nella  `TridentOrchestrator` custom resource (CR).
 
 I vantaggi dell'utilizzo dell'operatore Trident includono:
 
@@ -123,9 +123,9 @@ NOTE: Se il cluster viene aggiornato a una versione non supportata, l'operatore 
 
 === Utilizzando `tridentctl`
 
-Se hai una distribuzione esistente che deve essere aggiornata o se stai cercando di personalizzare notevolmente la tua distribuzione, dovresti prendere in considerazione .  Questo è il metodo convenzionale per distribuire Trident.
+Se hai una distribuzione esistente che deve essere aggiornata o se desideri personalizzarla in modo significativo, dovresti prendere in considerazione . Questo è il metodo convenzionale per distribuire Trident.
 
-Puoi per generare i manifesti per le risorse Trident .  Ciò include la distribuzione, il daemonset, l'account di servizio e il ruolo del cluster che Trident crea come parte della sua installazione.
+È possibile  generare i manifest per le risorse Trident. Questo include la deployment, il daemonset, l'account di servizio e il cluster role che Trident crea come parte della sua installazione.
 
 
 NOTE: A partire dalla versione 22.04, le chiavi AES non verranno più rigenerate ogni volta che si installa Trident .  Con questa versione, Trident installerà un nuovo oggetto segreto che persisterà in tutte le installazioni.  Ciò significa che `tridentctl` nella versione 22.04 è possibile disinstallare le versioni precedenti di Trident, ma le versioni precedenti non possono disinstallare le installazioni della versione 22.04.  Selezionare il _metodo_ di installazione appropriato.

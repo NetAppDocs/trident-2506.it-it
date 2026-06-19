@@ -33,7 +33,7 @@ NOTE: Trident supporta tutti i modelli di distribuzione ONTAP sopra menzionati.
 
 == Cloud Volumes ONTAP
 
-http://cloud.netapp.com/ontap-cloud?utm_source=GitHub&utm_campaign=Trident["Cloud Volumes ONTAP"^]è un dispositivo di archiviazione esclusivamente software che esegue il software di gestione dati ONTAP nel cloud.  È possibile utilizzare Cloud Volumes ONTAP per carichi di lavoro di produzione, disaster recovery, DevOps, condivisione di file e gestione di database.  Estende lo storage aziendale al cloud offrendo efficienza di storage, elevata disponibilità, replicazione dei dati, suddivisione in livelli dei dati e coerenza delle applicazioni.
+Cloud Volumes ONTAP è un'appliance di storage esclusivamente software che esegue il software di gestione ONTAP nel cloud. Puoi usare Cloud Volumes ONTAP per carichi di lavoro di produzione, disaster recovery, DevOps, condivisioni di file e gestione del database. Estende lo storage enterprise al cloud offrendo efficienza dello storage, alta disponibilità, replica dei dati, tiering dei dati e coerenza delle applicazioni.
 
 
 
@@ -65,4 +65,4 @@ https://azure.microsoft.com/en-us/services/netapp/["Azure NetApp Files"^]è un s
 
 == Google Cloud NetApp Volumes
 
-https://cloud.netapp.com/cloud-volumes-service-for-gcp?utm_source=GitHub&utm_campaign=Trident["Google Cloud NetApp Volumes"^]è un servizio file nativo del cloud che fornisce volumi NAS su NFS con prestazioni all-flash.  Questo servizio consente l'esecuzione di qualsiasi carico di lavoro, comprese le applicazioni legacy, nel cloud GCP.  Fornisce un servizio completamente gestito che garantisce prestazioni elevate e costanti, clonazione istantanea, protezione dei dati e accesso sicuro alle istanze di Google Compute Engine (GCE).
+https://www.netapp.com/google-cloud/netapp-volumes/["Google Cloud NetApp Volumes"^] è un file service cloud native che fornisce volumi NAS su NFS con performance all-flash. Questo servizio consente a qualsiasi workload, comprese le applicazioni legacy, di essere eseguito nel cloud GCP. Fornisce un servizio gestito che offre performance elevate e costanti, clonazione istantanea, protezione dei dati e accesso sicuro alle istanze di Google Compute Engine (GCE).

@@ -141,7 +141,7 @@ Il Trident legge il `shareFromPVC` annotazione sul PVC di destinazione e crea il
 
 == Utilizzo `tridentctl get` per interrogare volumi subordinati
 
-Utilizzando il[`tridentctl` utilità, è possibile eseguire il `get` comando per ottenere volumi subordinati.  Per maggiori informazioni, fare riferimento al link:../trident-reference/tridentctl.html[`tridentctl` comandi e opzioni].
+Utilizzando l'[`tridentctl`utility, puoi eseguire il `get`comando per ottenere i volumi subordinati. Per ulteriori informazioni, consulta link:../trident-managing-k8s/tridentctl.html[`tridentctl` comandi e opzioni].
 
 [listing]
 ----
@@ -170,6 +170,5 @@ Bandiere:
 
 Per saperne di più sull'accesso ai volumi tra più namespace:
 
-* Visitalink:https://cloud.netapp.com/blog/astra-blg-sharing-volumes-between-namespaces-say-hello-to-cross-namespace-volume-access["Condivisione di volumi tra namespace: dai il benvenuto all'accesso ai volumi tra namespace"^] .
 * Guarda la demo sulink:https://media.netapp.com/page/9071d19d-1438-5ed3-a7aa-ea4d73c28b7f/solutions-products["NetAppTV"^] .
 

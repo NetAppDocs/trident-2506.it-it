@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: trident-get-started/kubernetes-deploy-helm-mirror.html 
+permalink: trident-install/kubernetes-deploy-helm-mirror.html 
 keywords: deploy, Trident, operator, helm, helm chart, configuration, values, offline, air gap, gap, registry 
 summary: 'È possibile distribuire l"operatore Trident e installare Trident tramite Helm.  Questo processo si applica alle installazioni in cui le immagini dei container richieste da Trident sono archiviate in un registro privato.' 
 ---
@@ -38,12 +38,12 @@ Utilizzo di una configurazione non multipathing o utilizzo di `find_multipaths: 
 
 == Distribuisci l'operatore Trident e installa Trident utilizzando Helm
 
-Utilizzo del Tridentlink:https://netapp.github.io/trident-helm-chart["Grafico del timone"^] è possibile distribuire l'operatore Trident e installare Trident in un unico passaggio.
+Utilizzo del Tridentlink:https://artifacthub.io/packages/helm/netapp-trident/trident-operator["Grafico del timone"^] è possibile distribuire l'operatore Trident e installare Trident in un unico passaggio.
 
-Revisionelink:../trident-get-started/kubernetes-deploy.html["la panoramica dell'installazione"] per assicurarti di aver soddisfatto i prerequisiti di installazione e di aver selezionato l'opzione di installazione corretta per il tuo ambiente.
+Verificate link:../trident-install/kubernetes-deploy.html["la panoramica dell'installazione"] per assicurarvi di aver soddisfatto i prerequisiti di installazione e di aver selezionato l'opzione di installazione corretta per il vostro ambiente.
 
 .Prima di iniziare
-Oltre allink:../trident-get-started/kubernetes-deploy.html#before-you-deploy["prerequisiti di distribuzione"] hai bisognolink:https://v3.helm.sh/["Versione Helm 3"^] .
+Oltre al link:../trident-install/kubernetes-deploy.html#before-you-deploy["prerequisiti di distribuzione"] è necessario link:https://v3.helm.sh/["Versione Helm 3"^].
 
 
 IMPORTANT: Quando si installa Trident in un repository privato, se si utilizza `imageRegistry` passa per specificare la posizione del repository, non utilizzare `/netapp/` nel percorso del repository.

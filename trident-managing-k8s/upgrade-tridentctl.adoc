@@ -18,7 +18,7 @@ summary: 'È possibile aggiornare facilmente un"installazione Trident esistente 
 Disinstallare e reinstallare Trident equivale a eseguire un aggiornamento.  Quando si disinstalla Trident, il Persistent Volume Claim (PVC) e il Persistent Volume (PV) utilizzati dalla distribuzione Trident non vengono eliminati.  I PV già forniti rimarranno disponibili mentre Trident è offline e Trident fornirà volumi per tutti i PVC creati nel frattempo, dopo essere tornato online.
 
 .Prima di iniziare
-Revisionelink:upgrade-trident.html#select-an-upgrade-method["Seleziona un metodo di aggiornamento"] prima di effettuare l'aggiornamento utilizzando `tridentctl` .
+Rivedi link:upgrade-trident.html#step-3-select-an-upgrade-method["Seleziona un metodo di aggiornamento"] prima di aggiornare usando `tridentctl`.
 
 .Passi
 . Eseguire il comando di disinstallazione in `tridentctl` per rimuovere tutte le risorse associate a Trident, ad eccezione dei CRD e degli oggetti correlati.
@@ -27,7 +27,7 @@ Revisionelink:upgrade-trident.html#select-an-upgrade-method["Seleziona un metodo
 ----
 ./tridentctl uninstall -n <namespace>
 ----
-. Reinstallare Trident. Fare riferimento alink:../trident-get-started/kubernetes-deploy-tridentctl.html["Installa Trident usando tridentctl"] .
+. Reinstallare Trident. Fare riferimento a link:../trident-install/kubernetes-deploy-tridentctl.html["Installa Trident usando tridentctl"].
 
 
 

@@ -154,7 +154,7 @@ NOTE: Se i PVC sono collegati a uno o più pod, è necessario disattivare tutti 
 | `encryption` | Abilita NetApp Volume Encryption (NVE) sul nuovo volume; l'impostazione predefinita è `false` .  Per utilizzare questa opzione, NVE deve essere concesso in licenza e abilitato sul cluster.  Se NAE è abilitato sul backend, qualsiasi volume fornito in Trident sarà abilitato per NAE.  Per maggiori informazioni, fare riferimento a:link:../trident-reco/security-reco.html["Come funziona Trident con NVE e NAE"] . | `false` 
 
 
-| `luksEncryption` | Abilita la crittografia LUKS. Fare riferimento alink:../trident-reco/security-reco.html#Use-Linux-Unified-Key-Setup-(LUKS)["Utilizzare Linux Unified Key Setup (LUKS)"] .  Solo SAN. | "" 
+| `luksEncryption` | Abilita la crittografia LUKS. Fare riferimento a link:../trident-reco/security-luks.html["Utilizzare Linux Unified Key Setup (LUKS)"]. Solo SAN. | "" 
 
 
 | `tieringPolicy` | Criterio di tiering da utilizzare	`none` |  

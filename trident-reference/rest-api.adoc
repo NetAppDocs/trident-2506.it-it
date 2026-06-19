@@ -12,7 +12,7 @@ summary: 'Se preferisci interagire con l"API REST di Trident, puoi utilizzare di
 
 
 [role="lead"]
-Mentrelink:tridentctl.html["comandi e opzioni tridentctl"] rappresentano il modo più semplice per interagire con l'API REST Trident ; se preferisci, puoi utilizzare direttamente l'endpoint REST.
+Sebbene link:../trident-managing-k8s/tridentctl.html["comandi e opzioni tridentctl"] siano il modo più semplice per interagire con la Trident REST API, puoi utilizzare direttamente l'endpoint REST se lo preferisci.
 
 
 
