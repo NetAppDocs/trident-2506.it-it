@@ -16,6 +16,7 @@ Scopri di più sulle porte utilizzate Trident per le comunicazioni.
 
 
 
+[[trident-ports]]
 == Porte Trident
 
 Trident utilizza le seguenti porte per la comunicazione all'interno di Kubernetes:

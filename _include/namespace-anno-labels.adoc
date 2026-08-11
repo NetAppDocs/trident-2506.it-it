@@ -4,6 +4,7 @@
 
 
 
+[[namespace-annotations-and-labels-during-restore-and-failover-operations]]
 == Annotazioni e etichette dello spazio dei nomi durante le operazioni di ripristino e failover
 
 Durante le operazioni di ripristino e failover, le etichette e le annotazioni nello spazio dei nomi di destinazione vengono create in modo da corrispondere alle etichette e alle annotazioni nello spazio dei nomi di origine.  Vengono aggiunte etichette o annotazioni provenienti dallo spazio dei nomi di origine che non esistono nello spazio dei nomi di destinazione e tutte le etichette o annotazioni già esistenti vengono sovrascritte in modo che corrispondano al valore dello spazio dei nomi di origine.  Le etichette o le annotazioni che esistono solo nello spazio dei nomi di destinazione rimangono invariate.
@@ -24,6 +25,7 @@ Se hai installato l'applicazione sorgente utilizzando Helm con `--create-namespa
 
 
 
+[[example]]
 === Esempio
 
 L'esempio seguente presenta uno spazio dei nomi di origine e di destinazione, ciascuno con annotazioni ed etichette diverse.  È possibile visualizzare lo stato dello spazio dei nomi di destinazione prima e dopo l'operazione e il modo in cui le annotazioni e le etichette vengono combinate o sovrascritte nello spazio dei nomi di destinazione.

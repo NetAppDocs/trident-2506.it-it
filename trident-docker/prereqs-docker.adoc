@@ -16,6 +16,7 @@ Prima di poter distribuire Trident, è necessario installare e configurare i pre
 
 
 
+[[verify-the-requirements]]
 == Verificare i requisiti
 
 * Verifica che la tua distribuzione soddisfi tutti i requisitilink:../trident-get-started/requirements.html["requisiti"] .
@@ -30,6 +31,7 @@ docker --version
 
 
 
+[[nfs-tools]]
 === Strumenti NFS
 
 Installare gli strumenti NFS utilizzando i comandi per il sistema operativo in uso.
@@ -56,6 +58,7 @@ WARNING: Riavviare i nodi worker dopo aver installato gli strumenti NFS per evit
 
 
 
+[[iscsi-tools]]
 === strumenti iSCSI
 
 Installare gli strumenti iSCSI utilizzando i comandi del sistema operativo in uso.
@@ -158,6 +161,7 @@ sudo systemctl status open-iscsi
 ====
 
 
+[[nvme-tools]]
 == Strumenti NVMe
 
 Installa gli strumenti NVMe utilizzando i comandi per il tuo sistema operativo.
@@ -192,6 +196,7 @@ sudo modprobe nvme-tcp
 ====
 
 
+[[fc-tools]]
 == Strumenti FC
 
 Installa gli strumenti FC utilizzando i comandi per il tuo sistema operativo.

@@ -31,12 +31,14 @@ Le configurazioni e le istruzioni incluse in questi passaggi sono solo esempi; �
 ====
 
 
+[[step-1-install-the-monitoring-tools]]
 == Passaggio 1: installare gli strumenti di monitoraggio
 
 Per abilitare il monitoraggio delle risorse in Trident Protect, è necessario installare e configurare kube-state-metrics, Promethus e Alertmanager.
 
 
 
+[[install-kube-state-metrics]]
 === Installa kube-state-metrics
 
 Puoi installare kube-state-metrics tramite Helm.
@@ -113,18 +115,21 @@ helm install custom-resource -f metrics-config.yaml prometheus-community/kube-st
 
 
 
+[[install-prometheus]]
 === Installa Prometheus
 
 Puoi installare Prometheus seguendo le istruzioni nel https://prometheus.io/docs/prometheus/latest/installation/["Documentazione di Prometheus"^] .
 
 
 
+[[install-alertmanager]]
 === Installa Alertmanager
 
 Puoi installare Alertmanager seguendo le istruzioni nel https://github.com/prometheus/alertmanager?tab=readme-ov-file#install["Documentazione di Alertmanager"^] .
 
 
 
+[[step-2-configure-the-monitoring-tools-to-work-together]]
 == Passaggio 2: configurare gli strumenti di monitoraggio affinché funzionino insieme
 
 Dopo aver installato gli strumenti di monitoraggio, è necessario configurarli affinché funzionino insieme.
@@ -168,12 +173,14 @@ Prometheus ora può raccogliere metriche da kube-state-metrics e può inviare av
 
 
 
+[[step-3-configure-alerts-and-alert-destinations]]
 == Passaggio 3: configurare gli avvisi e le destinazioni degli avvisi
 
 Dopo aver configurato gli strumenti affinché funzionino insieme, è necessario configurare il tipo di informazioni che attivano gli avvisi e dove devono essere inviati.
 
 
 
+[[alert-example-backup-failure]]
 === Esempio di avviso: errore di backup
 
 L'esempio seguente definisce un avviso critico che viene attivato quando lo stato della risorsa personalizzata di backup è impostato su `Error` per 5 secondi o più.  Puoi personalizzare questo esempio per adattarlo al tuo ambiente e includere questo frammento YAML nel tuo `prometheus.yaml` file di configurazione:
@@ -196,6 +203,7 @@ rules.yaml: |
 ----
 
 
+[[configure-alertmanager-to-send-alerts-to-other-channels]]
 === Configura Alertmanager per inviare avvisi ad altri canali
 
 È possibile configurare Alertmanager per inviare notifiche ad altri canali, come e-mail, PagerDuty, Microsoft Teams o altri servizi di notifica specificando la rispettiva configurazione in `alertmanager.yaml` file.

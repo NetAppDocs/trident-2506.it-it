@@ -20,6 +20,7 @@ Trident supporta relazioni mirror tra un volume di origine su un cluster e il vo
 
 
 
+[[replication-prerequisites]]
 == Prerequisiti di replicazione
 
 Prima di iniziare, assicurati che siano soddisfatti i seguenti prerequisiti:
@@ -53,6 +54,7 @@ NOTE: La replicazione del volume tramite SnapMirror non è supportata per i sist
 
 
 
+[[create-a-mirrored-pvc]]
 == Crea un PVC specchiato
 
 Seguire questi passaggi e utilizzare gli esempi CRD per creare una relazione speculare tra volumi primari e secondari.
@@ -197,6 +199,7 @@ Trident verificherà il CRD TridentMirrorRelationship e non riuscirà a creare i
 
 
 
+[[volume-replication-states]]
 == Stati di replica del volume
 
 Una relazione Trident Mirror (TMR) è una CRD che rappresenta un'estremità di una relazione di replicazione tra PVC.  Il TMR di destinazione ha uno stato che indica a Trident qual è lo stato desiderato.  La TMR di destinazione presenta i seguenti stati:
@@ -213,6 +216,7 @@ Una relazione Trident Mirror (TMR) è una CRD che rappresenta un'estremità di u
 
 
 
+[[promote-secondary-pvc-during-an-unplanned-failover]]
 == Promuovere il PVC secondario durante un failover non pianificato
 
 Eseguire il seguente passaggio sul cluster Kubernetes secondario:
@@ -222,6 +226,7 @@ Eseguire il seguente passaggio sul cluster Kubernetes secondario:
 
 
 
+[[promote-secondary-pvc-during-a-planned-failover]]
 == Promuovere PVC secondario durante un failover pianificato
 
 Durante un failover pianificato (migrazione), eseguire i seguenti passaggi per promuovere il PVC secondario:
@@ -246,6 +251,7 @@ spec:
 
 
 
+[[restore-a-mirror-relationship-after-a-failover]]
 == Ripristinare una relazione mirror dopo un failover
 
 Prima di ripristinare una relazione speculare, scegli il lato che vuoi rendere primario.
@@ -257,12 +263,14 @@ Prima di ripristinare una relazione speculare, scegli il lato che vuoi rendere p
 
 
 
+[[additional-operations]]
 == Operazioni aggiuntive
 
 Trident supporta le seguenti operazioni sui volumi primario e secondario:
 
 
 
+[[replicate-primary-pvc-to-a-new-secondary-pvc]]
 === Replicare il PVC primario in un nuovo PVC secondario
 
 Assicurati di avere già un PVC primario e un PVC secondario.
@@ -275,12 +283,14 @@ Assicurati di avere già un PVC primario e un PVC secondario.
 
 
 
+[[resize-a-mirrored-primary-or-secondary-pvc]]
 === Ridimensiona un PVC specchiato, primario o secondario
 
 Il PVC può essere ridimensionato normalmente, ONTAP espanderà automaticamente tutti i flevxol di destinazione se la quantità di dati supera la dimensione corrente.
 
 
 
+[[remove-replication-from-a-pvc]]
 === Rimuovere la replicazione da un PVC
 
 Per rimuovere la replica, eseguire una delle seguenti operazioni sul volume secondario corrente:
@@ -291,24 +301,28 @@ Per rimuovere la replica, eseguire una delle seguenti operazioni sul volume seco
 
 
 
+[[delete-a-pvc-that-was-previously-mirrored]]
 === Elimina un PVC (che era stato precedentemente specchiato)
 
 Trident verifica la presenza di PVC replicati e rilascia la relazione di replicazione prima di tentare di eliminare il volume.
 
 
 
+[[delete-a-tmr]]
 === Elimina un TMR
 
 L'eliminazione di un TMR su un lato di una relazione speculare fa sì che il TMR rimanente passi allo stato _promosso_ prima che Trident completi l'eliminazione.  Se il TMR selezionato per l'eliminazione è già nello stato _promosso_, non esiste alcuna relazione mirror e il TMR verrà rimosso e Trident promuoverà il PVC locale a _ReadWrite_.  Questa eliminazione rilascia i metadati SnapMirror per il volume locale in ONTAP.  Se in futuro questo volume verrà utilizzato in una relazione mirror, dovrà utilizzare un nuovo TMR con uno stato di replica del volume _stabilito_ durante la creazione della nuova relazione mirror.
 
 
 
+[[update-mirror-relationships-when-ontap-is-online]]
 == Aggiorna le relazioni mirror quando ONTAP è online
 
 Le relazioni speculari possono essere aggiornate in qualsiasi momento dopo essere state stabilite.  Puoi usare il `state: promoted` O `state: reestablished` campi per aggiornare le relazioni.  Quando si promuove un volume di destinazione a un normale volume ReadWrite, è possibile utilizzare _promotedSnapshotHandle_ per specificare uno snapshot specifico in cui ripristinare il volume corrente.
 
 
 
+[[update-mirror-relationships-when-ontap-is-offline]]
 == Aggiorna le relazioni mirror quando ONTAP è offline
 
 È possibile utilizzare un CRD per eseguire un aggiornamento SnapMirror senza che Trident abbia connettività diretta al cluster ONTAP .  Fare riferimento al seguente formato di esempio di TridentActionMirrorUpdate:

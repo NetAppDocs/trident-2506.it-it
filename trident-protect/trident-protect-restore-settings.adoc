@@ -18,6 +18,7 @@ summary: È possibile personalizzare le operazioni di ripristino Trident Protect
 
 
 
+[[namespace-annotations-and-labels-during-restore-and-failover-operations]]
 == Annotazioni e etichette dello spazio dei nomi durante le operazioni di ripristino e failover
 
 Durante le operazioni di ripristino e failover, le etichette e le annotazioni nello spazio dei nomi di destinazione vengono create in modo da corrispondere alle etichette e alle annotazioni nello spazio dei nomi di origine.  Vengono aggiunte etichette o annotazioni provenienti dallo spazio dei nomi di origine che non esistono nello spazio dei nomi di destinazione e tutte le etichette o annotazioni già esistenti vengono sovrascritte in modo che corrispondano al valore dello spazio dei nomi di origine.  Le etichette o le annotazioni che esistono solo nello spazio dei nomi di destinazione rimangono invariate.
@@ -38,6 +39,7 @@ Se hai installato l'applicazione sorgente utilizzando Helm con `--create-namespa
 
 
 
+[[example]]
 === Esempio
 
 L'esempio seguente presenta uno spazio dei nomi di origine e di destinazione, ciascuno con annotazioni ed etichette diverse.  È possibile visualizzare lo stato dello spazio dei nomi di destinazione prima e dopo l'operazione e il modo in cui le annotazioni e le etichette vengono combinate o sovrascritte nello spazio dei nomi di destinazione.
@@ -100,12 +102,14 @@ La tabella seguente illustra lo stato dello spazio dei nomi di destinazione di e
 |===
 
 
+[[supported-fields]]
 == Campi supportati
 
 Questa sezione descrive i campi aggiuntivi disponibili per le operazioni di ripristino.
 
 
 
+[[storage-class-mapping]]
 === Mappatura delle classi di archiviazione
 
 IL `spec.storageClassMapping` L'attributo definisce una mappatura da una classe di archiviazione presente nell'applicazione di origine a una nuova classe di archiviazione nel cluster di destinazione. È possibile utilizzarlo durante la migrazione di applicazioni tra cluster con classi di archiviazione diverse o quando si modifica il backend di archiviazione per le operazioni BackupRestore.
@@ -122,6 +126,7 @@ storageClassMapping:
 ----
 
 
+[[supported-annotations]]
 == Annotazioni supportate
 
 Questa sezione elenca le annotazioni supportate per la configurazione di vari comportamenti nel sistema.  Se un'annotazione non viene impostata esplicitamente dall'utente, il sistema utilizzerà il valore predefinito.

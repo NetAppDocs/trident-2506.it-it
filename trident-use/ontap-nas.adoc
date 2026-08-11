@@ -16,6 +16,7 @@ Scopri come configurare un backend ONTAP con i driver ONTAP e Cloud Volumes ONTA
 
 
 
+[[ontap-nas-driver-details]]
 == Dettagli del driver ONTAP NAS
 
 Trident fornisce i seguenti driver di archiviazione NAS per comunicare con il cluster ONTAP .  Le modalità di accesso supportate sono: _ReadWriteOnce_ (RWO), _ReadOnlyMany_ (ROX), _ReadWriteMany_ (RWX), _ReadWriteOncePod_ (RWOP).
@@ -68,6 +69,7 @@ RWO, ROX, RWX, RWOP
 ====
 
 
+[[user-permissions]]
 == Permessi utente
 
 Trident prevede di essere eseguito come amministratore ONTAP o SVM, in genere utilizzando `admin` utente del cluster o un `vsadmin` Utente SVM o un utente con un nome diverso che ha lo stesso ruolo.

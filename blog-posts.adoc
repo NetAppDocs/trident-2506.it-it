@@ -16,6 +16,7 @@ Puoi trovare alcuni ottimi blog NetApp Trident e Trident Protect qui:
 
 
 
+[[trident-blogs]]
 == Blog Trident
 
 * 9 maggio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Automatic-Trident-backend-configuration-for-FSx-for-ONTAP-with-the-Amazon-EKS/ba-p/460586["Configurazione automatica del backend Trident per FSx per ONTAP con il componente aggiuntivo Amazon EKS"^]
@@ -28,7 +29,6 @@ Puoi trovare alcuni ottimi blog NetApp Trident e Trident Protect qui:
 * 5 marzo 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Unlock-Seamless-iSCSI-Storage-Integration-A-Guide-to-FSxN-on-ROSA-Clusters-for/ba-p/459124["Sblocca l'integrazione perfetta dello storage iSCSI: una guida a FSxN su cluster ROSA per AWS"^]
 * 27 febbraio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Deploying-cloud-identity-with-Trident-GKE-and-Google-Cloud-NetApp-Volumes/ba-p/458912["Distribuzione dell'identità cloud con Trident, GKE e Google Cloud NetApp Volumes"^]
 * 12 dicembre 2024:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Introducing-Fibre-Channel-support-in-Trident/ba-p/457427["Introduzione del supporto Fibre Channel in Trident"^]
-* 26 novembre 2024:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Trident-25-01-Enhancing-the-Kubernetes-Storage-Experience-with-New-Features-and/ba-p/456885["Trident 25.01: Miglioramento dell'esperienza di archiviazione Kubernetes con nuove funzionalità e miglioramenti"^]
 * 11 novembre 2024:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/NetApp-Trident-with-Google-Cloud-NetApp-Volumes/ba-p/456484["NetApp Trident con Google Cloud NetApp Volumes"^]
 * 29 ottobre 2024:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Amazon-FSx-for-NetApp-ONTAP-with-Red-Hat-OpenShift-Service-on-AWS-ROSA-using/ba-p/456167["Amazon FSx for NetApp ONTAP con Red Hat OpenShift Service su AWS (ROSA) utilizzando Trident"^]
 * 29 ottobre 2024:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Live-Migration-of-VMs-with-OpenShift-Virtualization-on-ROSA-and-Amazon-FSx-for/ba-p/456213["Migrazione live di VM con OpenShift Virtualization su ROSA e Amazon FSx for NetApp ONTAP"^]
@@ -39,6 +39,7 @@ Puoi trovare alcuni ottimi blog NetApp Trident e Trident Protect qui:
 
 
 
+[[trident-protect-blogs]]
 == Blog Trident Protect
 
 * 16 maggio 2025:link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Automating-registry-failover-for-disaster-recovery-with-Trident-protect-post/ba-p/460777["Automazione del failover del registro per il ripristino di emergenza con hook post-ripristino Trident Protect"^]

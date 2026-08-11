@@ -16,6 +16,7 @@ Utilizzando Trident, è possibile creare un volume in uno spazio dei nomi primar
 
 
 
+[[features]]
 == Caratteristiche
 
 TridentVolumeReference CR consente di condividere in modo sicuro volumi NFS ReadWriteMany (RWX) su uno o più namespace Kubernetes.  Questa soluzione nativa di Kubernetes offre i seguenti vantaggi:
@@ -31,6 +32,7 @@ image::cross-namespace-sharing.png[Un diagramma concettuale della condivisione d
 
 
 
+[[quick-start]]
 == Avvio rapido
 
 È possibile configurare la condivisione del volume NFS in pochi semplici passaggi.
@@ -53,6 +55,7 @@ Il proprietario dello spazio dei nomi di destinazione crea il PVC subordinato pe
 
 
 
+[[configure-the-source-and-destination-namespaces]]
 == Configurare gli spazi dei nomi di origine e di destinazione
 
 Per garantire la sicurezza, la condivisione tra namespace richiede la collaborazione e l'azione del proprietario dello spazio dei nomi di origine, dell'amministratore del cluster e del proprietario dello spazio dei nomi di destinazione.  Il ruolo dell'utente viene designato in ogni fase.
@@ -133,12 +136,14 @@ Il Trident legge il `shareFromPVC` annotazione sul PVC di destinazione e crea il
 
 
 
+[[delete-a-shared-volume]]
 == Elimina un volume condiviso
 
 È possibile eliminare un volume condiviso tra più namespace.  Trident rimuoverà l'accesso al volume nello spazio dei nomi di origine e manterrà l'accesso per gli altri spazi dei nomi che condividono il volume.  Quando tutti gli spazi dei nomi che fanno riferimento al volume vengono rimossi, Trident elimina il volume.
 
 
 
+[[use-tridentctl-get-to-query-subordinate-volumes]]
 == Utilizzo `tridentctl get` per interrogare volumi subordinati
 
 Utilizzando l'[`tridentctl`utility, puoi eseguire il `get`comando per ottenere i volumi subordinati. Per ulteriori informazioni, consulta link:../trident-managing-k8s/tridentctl.html[`tridentctl` comandi e opzioni].
@@ -157,6 +162,7 @@ Bandiere:
 
 
 
+[[limitations]]
 == Limitazioni
 
 * Trident non può impedire agli spazi dei nomi di destinazione di scrivere sul volume condiviso.  Per evitare la sovrascrittura dei dati del volume condiviso, è opportuno utilizzare il blocco dei file o altri processi.
@@ -166,6 +172,7 @@ Bandiere:
 
 
 
+[[for-more-information]]
 == Per maggiori informazioni
 
 Per saperne di più sull'accesso ai volumi tra più namespace:

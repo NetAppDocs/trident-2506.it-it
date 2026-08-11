@@ -16,6 +16,7 @@ summary: È possibile visualizzare le classi di archiviazione esistenti, imposta
 
 
 
+[[view-the-existing-storage-classes]]
 == Visualizza le classi di archiviazione esistenti
 
 * Per visualizzare le classi di archiviazione Kubernetes esistenti, eseguire il seguente comando:
@@ -48,6 +49,7 @@ tridentctl get storageclass <storage-class> -o json
 ----
 
 
+[[set-a-default-storage-class]]
 == Imposta una classe di archiviazione predefinita
 
 Kubernetes 1.6 ha aggiunto la possibilità di impostare una classe di archiviazione predefinita.  Questa è la classe di archiviazione che verrà utilizzata per fornire un volume persistente se un utente non ne specifica uno in una richiesta di volume persistente (PVC).
@@ -74,6 +76,7 @@ NOTE: Nel cluster dovrebbe essere presente una sola classe di archiviazione pred
 
 
 
+[[identify-the-backend-for-a-storage-class]]
 == Identificare il backend per una classe di archiviazione
 
 Questo è un esempio del tipo di domande a cui puoi rispondere con il JSON che `tridentctl` output per gli oggetti backend Trident .  Questo utilizza il `jq` utilità, che potrebbe essere necessario installare prima.
@@ -84,6 +87,7 @@ tridentctl get storageclass -o json | jq  '[.items[] | {storageClass: .Config.na
 ----
 
 
+[[delete-a-storage-class]]
 == Elimina una classe di archiviazione
 
 Per eliminare una classe di archiviazione da Kubernetes, esegui il seguente comando:

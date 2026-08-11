@@ -16,6 +16,7 @@ summary: 'È possibile importare volumi di archiviazione esistenti come PV Kuber
 
 
 
+[[overview-and-considerations]]
 == Panoramica e considerazioni
 
 È possibile importare un volume in Trident per:
@@ -52,6 +53,7 @@ TIP: Questa opzione è utile se si desidera utilizzare Kubernetes per carichi di
 
 
 
+[[import-a-volume]]
 == Importa un volume
 
 È possibile importare un volume utilizzando  `tridentctl import` oppure creando un PVC con annotazioni di importazione Trident.
@@ -147,12 +149,14 @@ Trident importerà automaticamente il volume e lo assocerà al PVC.
 ====
 
 
+[[examples]]
 == Esempi
 
 Esaminare i seguenti esempi di importazione di volumi per i driver supportati.
 
 
 
+[[ontap-nas-and-ontap-nas-flexgroup]]
 === ONTAP NAS e ONTAP NAS FlexGroup
 
 Trident supporta l'importazione di volumi utilizzando `ontap-nas` E `ontap-nas-flexgroup` conducenti.
@@ -260,6 +264,7 @@ spec:
 ====
 
 
+[[ontap-san]]
 === ONTAP SAN
 
 Trident supporta l'importazione di volumi utilizzando `ontap-san` (iSCSI, NVMe/TCP e FC) e `ontap-san-economy` conducenti.
@@ -312,6 +317,7 @@ image:./san-import-igroup.png["Immagine di LUNS mappata su iqn e cluster iqn."]
 ====
 
 
+[[element]]
 === Elemento
 
 Trident supporta il software NetApp Element e l'importazione di volumi NetApp HCI utilizzando `solidfire-san` autista.
@@ -333,6 +339,7 @@ tridentctl import volume element_default element-managed -f pvc-basic-import.yam
 ----
 
 
+[[google-cloud-platform]]
 === Piattaforma Google Cloud
 
 Trident supporta l'importazione di volumi utilizzando `gcp-cvs` autista.
@@ -355,6 +362,7 @@ tridentctl import volume gcpcvs_YEppr adroit-jolly-swift -f <path-to-pvc-file> -
 ----
 
 
+[[azure-netapp-files]]
 === Azure NetApp Files
 
 Trident supporta l'importazione di volumi utilizzando `azure-netapp-files` autista.
@@ -376,6 +384,7 @@ tridentctl import volume azurenetappfiles_40517 importvol1 -f <path-to-pvc-file>
 ----
 
 
+[[google-cloud-netapp-volumes]]
 === Google Cloud NetApp Volumes
 
 Trident supporta l'importazione di volumi utilizzando `google-cloud-netapp-volumes` autista.

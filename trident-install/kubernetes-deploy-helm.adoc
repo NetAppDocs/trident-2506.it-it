@@ -16,6 +16,7 @@ summary: 'È possibile distribuire l"operatore Trident e installare Trident tram
 
 
 
+[[critical-information-about-trident-25-06]]
 == Informazioni critiche su Trident 25.06
 
 *È necessario leggere le seguenti informazioni critiche su Trident.*
@@ -36,6 +37,7 @@ Utilizzo di una configurazione non multipathing o utilizzo di `find_multipaths: 
 ====
 
 
+[[deploy-the-trident-operator-and-install-trident-using-helm]]
 == Distribuisci l'operatore Trident e installa Trident utilizzando Helm
 
 Utilizzo del Tridentlink:https://artifacthub.io/packages/helm/netapp-trident/trident-operator["Grafico del timone"^] è possibile distribuire l'operatore Trident e installare Trident in un unico passaggio.
@@ -43,7 +45,7 @@ Utilizzo del Tridentlink:https://artifacthub.io/packages/helm/netapp-trident/tri
 Verificate link:../trident-install/kubernetes-deploy.html["la panoramica dell'installazione"] per assicurarvi di aver soddisfatto i prerequisiti di installazione e di aver selezionato l'opzione di installazione corretta per il vostro ambiente.
 
 .Prima di iniziare
-Oltre al link:../trident-install/kubernetes-deploy.html#before-you-deploy["prerequisiti di distribuzione"] è necessario link:https://v3.helm.sh/["Versione Helm 3"^].
+Oltre al link:kubernetes-deploy.html#before-you-begin["prerequisiti di distribuzione"] è necessario link:https://v3.helm.sh/["Versione Helm 3"^].
 
 .Passi
 . Aggiungere il repository Trident Helm:
@@ -68,6 +70,7 @@ Puoi usare `helm list` per rivedere i dettagli dell'installazione quali nome, sp
 
 
 
+[[pass-configuration-data-during-install]]
 == Passare i dati di configurazione durante l'installazione
 
 Esistono due modi per passare i dati di configurazione durante l'installazione:
@@ -94,6 +97,7 @@ helm install <name> netapp-trident/trident-operator --version 100.2506.0  --crea
 ----
 
 
+[[configuration-options]]
 == Opzioni di configurazione
 
 Questa tabella e la `values.yaml` file, che fa parte del grafico Helm, fornisce l'elenco delle chiavi e i relativi valori predefiniti.
@@ -257,6 +261,7 @@ Limite di query al secondo (QPS) utilizzato dal controller durante la comunicazi
 |===
 
 
+[[understanding-controller-pods-and-node-pods]]
 === Comprensione dei pod controller e dei pod node
 
 Trident viene eseguito come un singolo pod controller, più un pod nodo su ciascun nodo worker nel cluster.  Il pod del nodo deve essere in esecuzione su qualsiasi host in cui si desidera potenzialmente montare un volume Trident .

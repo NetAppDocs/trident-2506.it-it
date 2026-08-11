@@ -16,6 +16,7 @@ I pool virtuali forniscono un livello di astrazione tra i backend di archiviazio
 
 
 
+[[learn-about-virtual-pools]]
 == Scopri di più sui pool virtuali
 
 L'amministratore dell'archiviazione può definire pool virtuali su qualsiasi backend Trident in un file di definizione JSON o YAML.

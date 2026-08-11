@@ -21,12 +21,14 @@ NOTE: Quando si esegue la migrazione di un'applicazione, tutti gli hook di esecu
 
 
 
+[[backup-and-restore-operations]]
 == Operazioni di backup e ripristino
 
 Per eseguire operazioni di backup e ripristino per i seguenti scenari, è possibile automatizzare attività di backup e ripristino specifiche.
 
 
 
+[[clone-to-same-cluster]]
 === Clona nello stesso cluster
 
 Per clonare un'applicazione nello stesso cluster, creare uno snapshot o un backup e ripristinare i dati nello stesso cluster.
@@ -48,6 +50,7 @@ Per clonare un'applicazione nello stesso cluster, creare uno snapshot o un backu
 
 
 
+[[clone-to-different-cluster]]
 === Clona in cluster diversi
 
 Per clonare un'applicazione su un cluster diverso (eseguire un clone tra cluster), creare un backup sul cluster di origine, quindi ripristinare il backup su un cluster diverso. Assicurarsi che Trident Protect sia installato sul cluster di destinazione.
@@ -63,6 +66,7 @@ NOTE: È possibile replicare un'applicazione tra cluster diversi utilizzandolink
 
 
 
+[[migrate-applications-from-one-storage-class-to-another-storage-class]]
 == Migrare le applicazioni da una classe di archiviazione a un'altra classe di archiviazione
 
 È possibile migrare le applicazioni da una classe di archiviazione a una diversa ripristinando un backup nella classe di archiviazione di destinazione.

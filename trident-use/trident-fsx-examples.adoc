@@ -16,6 +16,7 @@ Scopri le opzioni di configurazione backend per Amazon FSx for ONTAP.  Questa se
 
 
 
+[[backend-configuration-options]]
 == Opzioni di configurazione del backend
 
 Per le opzioni di configurazione del backend, consultare la seguente tabella:
@@ -108,6 +109,7 @@ Per le opzioni di configurazione del backend, consultare la seguente tabella:
 |===
 
 
+[[update-datalif-after-initial-configuration]]
 === Aggiornamento `dataLIF` dopo la configurazione iniziale
 
 È possibile modificare il dataLIF dopo la configurazione iniziale eseguendo il comando seguente per fornire il nuovo file JSON backend con il dataLIF aggiornato.
@@ -121,6 +123,7 @@ NOTE: Se i PVC sono collegati a uno o più pod, è necessario disattivare tutti 
 
 
 
+[[backend-configuration-options-for-provisioning-volumes]]
 == Opzioni di configurazione del backend per il provisioning dei volumi
 
 È possibile controllare il provisioning predefinito utilizzando queste opzioni in `defaults` sezione della configurazione.  Per un esempio, vedere gli esempi di configurazione riportati di seguito.
@@ -167,6 +170,7 @@ NOTE: Se i PVC sono collegati a uno o più pod, è necessario disattivare tutti 
 |===
 
 
+[[example-configurations]]
 == Configurazioni di esempio
 
 .Configurazione della classe di archiviazione per i volumi SMB

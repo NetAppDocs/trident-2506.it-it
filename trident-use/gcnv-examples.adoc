@@ -16,6 +16,7 @@ Scopri le opzioni di configurazione backend per Google Cloud NetApp Volumes e ri
 
 
 
+[[backend-configuration-options]]
 == Opzioni di configurazione del backend
 
 Ogni backend esegue il provisioning dei volumi in una singola regione di Google Cloud.  Per creare volumi in altre regioni, è possibile definire backend aggiuntivi.
@@ -74,6 +75,7 @@ Ogni backend esegue il provisioning dei volumi in una singola regione di Google 
 |===
 
 
+[[volume-provisioning-options]]
 == Opzioni di provisioning del volume
 
 È possibile controllare il provisioning del volume predefinito in `defaults` sezione del file di configurazione.
@@ -96,6 +98,7 @@ Ogni backend esegue il provisioning dei volumi in una singola regione di Google 
 |===
 
 
+[[example-configurations]]
 == Configurazioni di esempio
 
 Gli esempi seguenti mostrano configurazioni di base che lasciano la maggior parte dei parametri predefiniti.  Questo è il modo più semplice per definire un backend.
@@ -339,6 +342,7 @@ supportedTopologies:
 ====
 
 
+[[whats-next]]
 == Cosa succederà ora?
 
 Dopo aver creato il file di configurazione del backend, eseguire il seguente comando:
@@ -366,6 +370,7 @@ Dopo aver identificato e corretto il problema con il file di configurazione, puo
 
 
 
+[[storage-class-definitions]]
 == Definizioni delle classi di archiviazione
 
 Quello che segue è un esempio di base `StorageClass` definizione che si riferisce al backend di cui sopra.
@@ -419,6 +424,7 @@ Per maggiori dettagli sulle classi di archiviazione, fare riferimento alink:../t
 
 
 
+[[example-definitions-for-smb-volumes]]
 === Definizioni di esempio per volumi SMB
 
 Utilizzando `nasType` , `node-stage-secret-name` , E `node-stage-secret-namespace` , è possibile specificare un volume SMB e fornire le credenziali Active Directory richieste.  Per il segreto della fase del nodo è possibile utilizzare qualsiasi utente/password di Active Directory con qualsiasi/nessuna autorizzazione.
@@ -479,6 +485,7 @@ NOTE: `nasType: smb`filtri per pool che supportano volumi SMB. `nasType: nfs` O 
 
 
 
+[[pvc-definition-example]]
 === Esempio di definizione di PVC
 
 [source, yaml]

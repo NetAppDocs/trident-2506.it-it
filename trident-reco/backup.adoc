@@ -16,12 +16,14 @@ Scopri le opzioni di protezione e ripristino per Trident e i volumi creati utili
 
 
 
+[[trident-replication-and-recovery]]
 == Replicazione e recupero Trident
 
 È possibile creare un backup per ripristinare Trident in caso di disastro.
 
 
 
+[[trident-replication]]
 === Replicazione Trident
 
 Trident utilizza i CRD di Kubernetes per archiviare e gestire il proprio stato e il cluster etcd di Kubernetes per archiviare i propri metadati.
@@ -37,6 +39,7 @@ NOTE: NetApp consiglia di proteggere l'SVM in cui risiede FlexVol con una relazi
 
 
 
+[[trident-recovery]]
 === Recupero Trident
 
 Utilizzando i CRD di Kubernetes e lo snapshot etcd del cluster Kubernetes, è possibile ripristinare Trident.
@@ -50,6 +53,7 @@ Utilizzando i CRD di Kubernetes e lo snapshot etcd del cluster Kubernetes, è po
 
 
 
+[[svm-replication-and-recovery]]
 == Replica e ripristino SVM
 
 Trident non può configurare relazioni di replica, tuttavia, l'amministratore di storage può utilizzare https://docs.netapp.com/us-en/ontap/data-protection/snapmirror-svm-replication-concept.html["ONTAP SnapMirror"^] per replicare una SVM.
@@ -66,6 +70,7 @@ Quando si utilizza la funzionalità di replica SVM SnapMirror, tenere presente q
 
 
 
+[[svm-replication]]
 === Replicazione SVM
 
 Puoi usarelink:https://docs.netapp.com/us-en/ontap/data-protection/snapmirror-svm-replication-workflow-concept.html["ONTAP: replica SVM SnapMirror"^] per creare la relazione di replicazione SVM.
@@ -79,6 +84,7 @@ SnapMirror consente di impostare opzioni per controllare cosa replicare.  Dovrai
 
 
 
+[[svm-recovery-using-trident]]
 === Ripristino SVM tramite Trident
 
 Trident non rileva automaticamente i guasti SVM.  In caso di disastro, l'amministratore può avviare manualmente il failover Trident sul nuovo SVM.
@@ -102,6 +108,7 @@ NOTE: Se hai specificato `-identity-preserve true` , tutti i volumi forniti da T
 
 
 
+[[volume-replication-and-recovery]]
 == Replicazione e ripristino del volume
 
 Trident non può configurare le relazioni di replica SnapMirror , tuttavia, l'amministratore dell'archiviazione può utilizzarelink:https://docs.netapp.com/us-en/ontap/data-protection/snapmirror-disaster-recovery-concept.html["Replica e ripristino ONTAP SnapMirror"^] per replicare i volumi creati da Trident.
@@ -113,6 +120,7 @@ NOTE: L'importazione non è supportata su `ontap-nas-economy` , `ontap-san-econo
 
 
 
+[[snapshot-data-protection]]
 == Protezione dei dati snapshot
 
 È possibile proteggere e ripristinare i dati utilizzando:

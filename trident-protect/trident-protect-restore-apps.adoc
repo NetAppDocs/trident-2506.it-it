@@ -26,6 +26,7 @@ Puoi utilizzare Trident Protect per ripristinare la tua applicazione da uno snap
 ====
 
 
+[[restore-from-a-backup-to-a-different-namespace]]
 == Ripristina da un backup a uno spazio dei nomi diverso
 
 Quando si ripristina un backup in uno spazio dei nomi diverso utilizzando un CR BackupRestore, Trident Protect ripristina l'applicazione in un nuovo spazio dei nomi e crea un CR dell'applicazione per l'applicazione ripristinata. Per proteggere l'applicazione ripristinata, creare backup o snapshot su richiesta oppure stabilire una pianificazione di protezione.
@@ -148,6 +149,7 @@ tridentctl-protect create backuprestore <my_restore_name> \
 ====
 
 
+[[restore-from-a-backup-to-the-original-namespace]]
 == Ripristina da un backup allo spazio dei nomi originale
 
 È possibile ripristinare un backup nello spazio dei nomi originale in qualsiasi momento.
@@ -267,6 +269,7 @@ tridentctl-protect create backupinplacerestore <my_restore_name> \
 ====
 
 
+[[restore-from-a-backup-to-a-different-cluster]]
 == Ripristina da un backup a un cluster diverso
 
 È possibile ripristinare un backup su un cluster diverso se si verifica un problema con il cluster originale.
@@ -387,6 +390,7 @@ tridentctl-protect create backuprestore <restore_name> \
 ====
 
 
+[[restore-from-a-snapshot-to-a-different-namespace]]
 == Ripristina da uno snapshot a uno spazio dei nomi diverso
 
 È possibile ripristinare i dati da uno snapshot utilizzando un file di risorse personalizzato (CR) in uno spazio dei nomi diverso o nello spazio dei nomi di origine originale. Quando si ripristina uno snapshot in un namespace diverso utilizzando un CR SnapshotRestore, Trident Protect ripristina l'applicazione in un nuovo namespace e crea un CR per l'applicazione ripristinata. Per proteggere l'applicazione ripristinata, creare backup o snapshot su richiesta oppure stabilire una pianificazione di protezione.
@@ -514,6 +518,7 @@ tridentctl-protect create snapshotrestore <my_restore_name> \
 ====
 
 
+[[restore-from-a-snapshot-to-the-original-namespace]]
 == Ripristina da uno snapshot allo spazio dei nomi originale
 
 È possibile ripristinare uno snapshot nello spazio dei nomi originale in qualsiasi momento.
@@ -630,6 +635,7 @@ tridentctl-protect create snapshotinplacerestore <my_restore_name> \
 ====
 
 
+[[check-the-status-of-a-restore-operation]]
 == Controllare lo stato di un'operazione di ripristino
 
 È possibile utilizzare la riga di comando per verificare lo stato di un'operazione di ripristino in corso, completata o non riuscita.

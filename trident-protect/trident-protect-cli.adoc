@@ -18,6 +18,7 @@ summary: È possibile utilizzare il comando protectctl per creare e interagire c
 
 
 
+[[install-the-trident-protect-cli-plugin]]
 == Installa il plugin Trident Protect CLI
 
 Prima di utilizzare l'utilità della riga di comando, è necessario installarla sul computer utilizzato per accedere al cluster.  Seguire questi passaggi, a seconda che il computer utilizzi una CPU x64 o ARM .
@@ -98,6 +99,7 @@ NOTE: Copiando il plugin in una posizione nella variabile PATH è possibile util
 
 
 
+[[view-trident-cli-plugin-help]]
 == Visualizza la guida del plugin Trident CLI
 
 È possibile utilizzare le funzionalità di aiuto integrate nel plugin per ottenere assistenza dettagliata sulle funzionalità del plugin:
@@ -113,6 +115,7 @@ tridentctl-protect help
 
 
 
+[[enable-command-auto-completion]]
 == Abilita il completamento automatico dei comandi
 
 Dopo aver installato il plugin Trident Protect CLI, è possibile abilitare il completamento automatico per determinati comandi.

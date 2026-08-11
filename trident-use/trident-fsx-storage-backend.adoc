@@ -13,6 +13,7 @@ summary: 'Utilizzando Trident con Amazon FSx for NetApp ONTAP, puoi garantire ch
 
 
 
+[[ontap-san-and-nas-driver-integration]]
 == Integrazione dei driver ONTAP SAN e NAS
 
 Per creare un backend di archiviazione, è necessario creare un file di configurazione in formato JSON o YAML.  Il file deve specificare il tipo di storage desiderato (NAS o SAN), il file system e l'SVM da cui ottenerlo e come autenticarsi.  L'esempio seguente mostra come definire l'archiviazione basata su NAS e utilizzare un segreto AWS per archiviare le credenziali nell'SVM che si desidera utilizzare:
@@ -100,6 +101,7 @@ backend-tbc-ontap-nas        tbc-ontap-nas        933e0071-66ce-4324-b9ff-f96d91
 
 
 
+[[fsx-for-ontap-driver-details]]
 == Dettagli del driver FSx per ONTAP
 
 È possibile integrare Trident con Amazon FSx for NetApp ONTAP utilizzando i seguenti driver:
@@ -132,6 +134,7 @@ backend-fsx-ontap-nas   backend-fsx-ontap-nas   7a551921-997c-4c37-a1d1-f2f4c87f
 ----
 
 
+[[backend-advanced-configuration-and-examples]]
 == Configurazione avanzata del backend ed esempi
 
 Per le opzioni di configurazione del backend, consultare la seguente tabella:
@@ -224,6 +227,7 @@ Per le opzioni di configurazione del backend, consultare la seguente tabella:
 |===
 
 
+[[backend-configuration-options-for-provisioning-volumes]]
 == Opzioni di configurazione del backend per il provisioning dei volumi
 
 È possibile controllare il provisioning predefinito utilizzando queste opzioni in `defaults` sezione della configurazione.  Per un esempio, vedere gli esempi di configurazione riportati di seguito.
@@ -270,6 +274,7 @@ Per le opzioni di configurazione del backend, consultare la seguente tabella:
 |===
 
 
+[[prepare-to-provision-smb-volumes]]
 == Prepararsi al provisioning dei volumi SMB
 
 È possibile eseguire il provisioning dei volumi SMB utilizzando `ontap-nas` autista.  Prima di completare<<Integrazione dei driver ONTAP SAN e NAS>> completare i seguenti passaggi.

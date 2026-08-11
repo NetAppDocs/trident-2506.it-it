@@ -16,6 +16,7 @@ Per garantire la sicurezza dell'installazione Trident , attenersi alle raccomand
 
 
 
+[[run-trident-in-its-own-namespace]]
 == Esegui Trident nel suo namespace
 
 È importante impedire alle applicazioni, agli amministratori delle applicazioni, agli utenti e alle applicazioni di gestione di accedere alle definizioni degli oggetti Trident o ai pod per garantire un'archiviazione affidabile e bloccare potenziali attività dannose.
@@ -24,6 +25,7 @@ Per separare le altre applicazioni e gli utenti da Trident, installare sempre Tr
 
 
 
+[[use-chap-authentication-with-ontap-san-backends]]
 == Utilizzare l'autenticazione CHAP con i backend ONTAP SAN
 
 Trident supporta l'autenticazione basata su CHAP per carichi di lavoro ONTAP SAN (utilizzando `ontap-san` E `ontap-san-economy` conducenti).  NetApp consiglia di utilizzare CHAP bidirezionale con Trident per l'autenticazione tra un host e il backend di storage.
@@ -32,6 +34,7 @@ Per i backend ONTAP che utilizzano i driver di archiviazione SAN, Trident può i
 
 
 
+[[use-chap-authentication-with-netapp-hci-and-solidfire-backends]]
 == Utilizzare l'autenticazione CHAP con i backend NetApp HCI e SolidFire
 
 NetApp consiglia di implementare CHAP bidirezionale per garantire l'autenticazione tra un host e i backend NetApp HCI e SolidFire .  Trident utilizza un oggetto segreto che include due password CHAP per tenant.  Quando Trident è installato, gestisce i segreti CHAP e li memorizza in un `tridentvolume` Oggetto CR per il rispettivo PV.  Quando si crea un PV, Trident utilizza i segreti CHAP per avviare una sessione iSCSI e comunicare con il sistema NetApp HCI e SolidFire tramite CHAP.
@@ -41,6 +44,7 @@ NOTE: I volumi creati da Trident non sono associati ad alcun Volume Access Group
 
 
 
+[[use-trident-with-nve-and-nae]]
 == Utilizzare Trident con NVE e NAE
 
 NetApp ONTAP fornisce la crittografia dei dati a riposo per proteggere i dati sensibili nel caso in cui un disco venga rubato, restituito o riutilizzato. Per i dettagli, fare riferimento alink:https://docs.netapp.com/us-en/ontap/encryption-at-rest/configure-netapp-volume-encryption-concept.html["Panoramica sulla configurazione della crittografia del volume NetApp"^] .

@@ -16,12 +16,14 @@ Il portfolio di prodotti di storage NetApp si integra con molti aspetti diversi 
 
 
 
+[[trident]]
 == Trident
 
 https://docs.netapp.com/us-en/trident/["Trident"^]semplifica per le aziende la gestione, la protezione e lo spostamento dei carichi di lavoro containerizzati ricchi di dati in esecuzione su Kubernetes all'interno e tra cloud pubblici e locali.  Trident fornisce e fornisce storage di container persistenti utilizzando Trident, partendo dal collaudato e ampio portfolio di storage NetApp nel cloud pubblico e in sede.  Offre inoltre un ricco set di funzionalità avanzate di gestione dei dati basate sulle applicazioni, come snapshot, backup e ripristino, registri delle attività e clonazione attiva per la protezione dei dati, il ripristino dei dati/disaster recovery, l'audit dei dati e i casi d'uso di migrazione per i carichi di lavoro Kubernetes.
 
 
 
+[[ontap]]
 == ONTAP
 
 ONTAP è il sistema operativo di storage unificato multiprotocollo NetApp che fornisce funzionalità avanzate di gestione dei dati per qualsiasi applicazione.  I sistemi ONTAP hanno configurazioni all-flash, ibride o all-HDD e offrono molti modelli di distribuzione diversi, tra cui hardware progettato (FAS e AFF), white-box (ONTAP Select) e solo cloud (Cloud Volumes ONTAP).
@@ -31,24 +33,28 @@ NOTE: Trident supporta tutti i modelli di distribuzione ONTAP sopra menzionati.
 
 
 
+[[cloud-volumes-ontap]]
 == Cloud Volumes ONTAP
 
 Cloud Volumes ONTAP è un'appliance di storage esclusivamente software che esegue il software di gestione ONTAP nel cloud. Puoi usare Cloud Volumes ONTAP per carichi di lavoro di produzione, disaster recovery, DevOps, condivisioni di file e gestione del database. Estende lo storage enterprise al cloud offrendo efficienza dello storage, alta disponibilità, replica dei dati, tiering dei dati e coerenza delle applicazioni.
 
 
 
+[[amazon-fsx-for-netapp-ontap]]
 == Amazon FSx for NetApp ONTAP
 
 https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/what-is-fsx-ontap.html["Amazon FSx for NetApp ONTAP"^]è un servizio AWS completamente gestito che consente di avviare ed eseguire file system basati sul sistema operativo di storage NetApp ONTAP .  FSx for ONTAP ti consente di sfruttare le funzionalità, le prestazioni e le capacità amministrative NetApp che conosci, sfruttando al contempo la semplicità, l'agilità, la sicurezza e la scalabilità dell'archiviazione dei dati su AWS.  FSx per ONTAP supporta molte delle funzionalità del file system ONTAP e delle API di amministrazione.
 
 
 
+[[element-software]]
 == Software Element
 
 https://www.netapp.com/data-management/element-software/["Elemento"^]consente all'amministratore dello storage di consolidare i carichi di lavoro garantendo le prestazioni e consentendo un ingombro di storage semplificato e ottimizzato.  Abbinato a un'API per consentire l'automazione di tutti gli aspetti della gestione dello storage, Element consente agli amministratori dello storage di fare di più con meno sforzo.
 
 
 
+[[netapp-hci]]
 == NetApp HCI
 
 https://www.netapp.com/virtual-desktop-infrastructure/netapp-hci/["NetApp HCI"^]semplifica la gestione e la scalabilità del data center automatizzando le attività di routine e consentendo agli amministratori dell'infrastruttura di concentrarsi su funzioni più importanti.
@@ -57,12 +63,14 @@ NetApp HCI è pienamente supportato da Trident.  Trident può fornire e gestire 
 
 
 
+[[azure-netapp-files]]
 == Azure NetApp Files
 
 https://azure.microsoft.com/en-us/products/netapp/["Azure NetApp Files"^] è un servizio di condivisione file Azure enterprise, alimentato da NetApp. Puoi eseguire i tuoi carichi di lavoro basati su file più impegnativi in Azure in modo nativo, con la performance e la ricca gestione dei dati che ti aspetti da NetApp.
 
 
 
+[[google-cloud-netapp-volumes]]
 == Google Cloud NetApp Volumes
 
 https://www.netapp.com/google-cloud/netapp-volumes/["Google Cloud NetApp Volumes"^] è un file service cloud native che fornisce volumi NAS su NFS con performance all-flash. Questo servizio consente a qualsiasi workload, comprese le applicazioni legacy, di essere eseguito nel cloud GCP. Fornisce un servizio gestito che offre performance elevate e costanti, clonazione istantanea, protezione dei dati e accesso sicuro alle istanze di Google Compute Engine (GCE).

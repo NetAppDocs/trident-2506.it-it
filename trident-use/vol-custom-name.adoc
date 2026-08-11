@@ -16,6 +16,7 @@ Con Trident puoi assegnare nomi ed etichette significativi ai volumi che crei.  
 
 
 
+[[before-you-begin]]
 == Prima di iniziare
 
 Supporto per nomi e etichette di volume personalizzabili:
@@ -27,6 +28,7 @@ Supporto per nomi e etichette di volume personalizzabili:
 
 
 
+[[limitations]]
 == Limitazioni
 
 . I nomi dei volumi personalizzabili sono compatibili solo con i driver ONTAP on-premises.
@@ -35,6 +37,7 @@ Supporto per nomi e etichette di volume personalizzabili:
 
 
 
+[[key-behaviors-of-customizable-volume-names]]
 == Comportamenti chiave dei nomi dei volumi personalizzabili
 
 . Se si verifica un errore a causa di una sintassi non valida in un modello di nome, la creazione del backend fallisce.  Tuttavia, se l'applicazione del modello fallisce, il volume verrà denominato in base alla convenzione di denominazione esistente.
@@ -43,6 +46,7 @@ Supporto per nomi e etichette di volume personalizzabili:
 
 
 
+[[backend-configuration-examples-with-name-template-and-labels]]
 == Esempi di configurazione del backend con modello di nome ed etichette
 
 È possibile definire modelli di nomi personalizzati a livello di radice e/o di pool.
@@ -103,6 +107,7 @@ Supporto per nomi e etichette di volume personalizzabili:
 ----
 
 
+[[name-template-examples]]
 == Esempi di modelli di nomi
 
 *Esempio 1*:
@@ -119,6 +124,7 @@ Supporto per nomi e etichette di volume personalizzabili:
 ----
 
 
+[[points-to-consider]]
 == Punti da considerare
 
 . Nel caso di importazioni di volumi, le etichette vengono aggiornate solo se il volume esistente ha etichette in un formato specifico.  Per esempio: `{"provisioning":{"Cluster":"ClusterA", "PVC": "pvcname"}}` .
